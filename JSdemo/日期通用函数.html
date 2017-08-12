@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>日期通用函数</title>
+	<script>
+		var F = {
+			//计算某年某月有多少天
+			getDaysInMonth : function(year, month) {
+				return new Date(year, month+1, 0).getDate();
+			}
+			//计算某月1号是星期几
+			getWeekInMonth : function (year, month) {
+				return new Date(year, month, 1).getDay();
+			},
+			getMonth : function (m) {
+				return ['一','二','三','四','五','六','七','八','九','十','十一','十二'][m];
+			},
+			//计算某年某月的最后一天日期
+			getLastDayInMonth : function (year, month) {
+				return new Data(year, month, this.getDaysInMonth(year, month));
+			}
+		}
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

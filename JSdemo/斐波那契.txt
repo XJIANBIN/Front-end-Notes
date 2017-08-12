@@ -1,0 +1,5 @@
+大家知道在数学上，fibonacci数列被以递归的方法定义：F0=0，F1=1，Fn=F(n-1)+F(n-2)（n>=2，n∈N*），而javascript的常用实现为：　
+
+var fibonacci =function(n) {
+    return n <2? n : arguments.callee(n -1) + arguments.callee(n -2);
+};

@@ -1,0 +1,66 @@
+前端像素
+
+1设备像素：屏幕的屋里像素
+2css像素：抽象概念
+一个css像素的大小是可变的，比如缩放页面，实际上就是在缩放CSS像素，设备像素无论大小和数量上都是不变的。
+
+移动端视口（PC上，视口只有一个，视口的宽度=浏览器窗口的宽度）
+
+1布局视口：移动端css布局的依据视口（实际上，布局视口要比浏览器窗口大得多，在手机和平板中浏览器布局视口的宽度在768~1024像素之间）
+js获取布局视口的宽度高度：
+document.documentElement.clientWidth
+document.documentElement.clientHeight
+
+2视觉视口：用户看到的网站的区域
+
+3理想视口：虚拟出来的视口，布局视口的理想尺寸，理想的布局视口
+把布局视口设为理想视口：
+<meta name="viweport" content="width=device-width" />
+
+
+设备像素比（DPR）
+设备像素比（DPR）= 设备像素个数/理想视口CSS像素个数（device-width） (缩放比例为1)
+
+meta标签
+<meta name="viweport" content="name=value" / >
+content属性是一个字符串值，逗号隔开，键值对组成，共五个
+
+1 width:设置布局视口的宽
+2 init-scale:设置页面的初始缩放程度
+3 minimum-scale:设置了页面最小缩放程度
+4 maximum-scale:设置了页面最大缩放程度
+5 user-scale: 是否允许用户对页面进行缩放
+
+常用实例
+
+<meta name="viweport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scale=no">
+
+媒体查询：（响应式基础）
+
+1、检测媒体的类型，比如 screen，tv等
+2、检测布局视口的特性，比如视口的宽高分辨率等
+3、特性相关查询，比如检测浏览器是否支持某某特性（这一点不讨论，因为它被目前浏览器支持的功能对于web开发来讲很无用）
+
+
+
+
+psd原稿的尺寸是按照设备像素设计的，而css的样式是基于布局视口的尺寸计算的，
+由于我们设置了
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+即布局视口等于理想视口
+这里以iphone6为例，iphone6的设备像素比为2，设备像素为750，所以理想视口=设备像素/DPR，即理想视口（布局视口）等于375px，即设计稿的尺寸使我们css尺寸的两倍，所以我们做页面的时候，所以我们要把设计稿量得尺寸除以2才是我们css布局所用尺寸
+
+但应该有的设备DPR可能是2.5,3等等，除以2只是ipone6的尺寸，这是我们就要相办法把把css尺寸拉到与设备像素相等，这样设计稿的尺寸就可以直接用了，可以通过伸缩css像素，
+
+var scale = 1 / window.devicePixelRatio; //设备像素比倒数
+document.querySelector('meta[name="viewport"]').setAttribute('content','width=device-width,initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
+
+这样又有一个问题，就是无论是iphone5,6即使设备像素变了，即屏幕宽度变了，可是元素的宽度并没有变
+
+
+rem
+ren是相对尺寸单位，相对于html标签字体大小的单位（文字字体大小不要使用rem，用px）
+
+
+
+

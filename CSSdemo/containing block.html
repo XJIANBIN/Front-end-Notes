@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>containing block</title>
+  <!-- http://www.cnblogs.com/fsjohnhuang/p/5295859.html -->
+  <!-- containing block在CSS的visual formatting model中十分重要的理论基础，因为盒子的宽/高度自动值/相对值的计算，相对/浮动/绝对定位，均依赖containing block -->
+  <style>
+    #box {
+      width: 200px;
+      height: 200px;
+      position: relative;
+      padding: 100px;
+      background: red;
+    }
+
+    #son {
+      width: 200px;
+      height: 200px;
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      background: yellow;
+    }
+  </style>
+</head>
+
+<body>
+  <div id='box'>
+    <div id='son'></div>
+  </div>
+  <p style="border:1px solid red; width:200px; padding:20px;">
+T
+<span style="background-color:#C0C0C0; position:relative;">
+        这段文字从左向右排列，红 XX 和 蓝 XX 和黄 XX 都是绝对定位元素，它的包含块是相对定位的SPAN。 可以通过它们绝对定位的位置来判断它们包含块的边缘。
+        <em style="position:absolute; color:red; top:0; left:0;">XX</em>
+        <em style="position:absolute; color:yellow; top:20px; left:0;">XX</em>
+        <em style="position:absolute; color:blue; bottom:0; right:0;">XX</em>
+</span>
+
+<p style="border:1px solid red; width:200px; padding:20px;">
+TEXT TEXT TEXT
+<span style="background-color:#C0C0C0; position:relative;">
+    这段文字从左向右排列，红 XX 和 蓝 XX 和黄 XX 都是绝对定位元素，它的包含块是相对定位的SPAN。 可以通过它们绝对定位的位置来判断它们包含块的边缘。
+    <em style="position:absolute; color:red; top:0; left:0;">XX</em>
+    <em style="position:absolute; color:yellow; top:20px; left:0;">XX</em>
+    <em style="position:absolute; color:blue; bottom:0; right:0;">XX</em>
+</span>
+</p>
+
+<p style="border:1px solid red; width:200px; padding:20px; direction:rtl;">
+T
+<span style="background-color:#C0C0C0; position:relative;">
+     这段文字从右向左排列，红 XX 和 蓝 XX 和黄 XX 都是绝对定位元素，它的包含块是相对定位的SPAN。可以通过它们绝对定位的位置来判断它们……
+    <em style="position:absolute; color:red; top:0; left:0;">XX</em>
+    <em style="position:absolute; color:yellow; top:20px; left:0;">XX</em>
+    <em style="position:absolute; color:blue; bottom:0; right:0;">XX</em>
+</span>
+</p>
+
+
+</p>
+</body>
+
+</html>

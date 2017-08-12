@@ -1,0 +1,109 @@
+http://www.ruanyifeng.com/blog/2011/08/a_detailed_explanation_of_jquery_deferred_object.html
+
+
+高于1.5版本的jq ajax返回的是deferred对象，可进行链式操作
+
+$.ajax("text.html")
+.done(function(){console.log("1");})
+.fail(function(){console.log("2");})
+
+可加多一些方法，按顺序执行，好处是可读性增强
+
+deferred对象的另一大好处，就是它允许你为多个事件指定一个回调函数，这是传统写法做不到的。
+请看下面的代码，它用到了一个新的方法$.when()：
+
+　$.when($.ajax("test1.html"), $.ajax("test2.html"))
+　　.done(function(){ alert("哈哈，成功了！"); })
+　　.fail(function(){ alert("出错啦！"); });
+
+
+deferred对象的最大优点，就是它把这一套回调函数接口，从ajax操作扩展到了所有操作。也就是说，任何一个操作----不管是ajax操作还是本地操作，也不管是异步操作还是同步操作----都可以使用deferred对象的各种方法，指定回调函数。
+
+
+$.when()的参数只能是deferred对象
+
+　　var dtd = $.Deferred(); // 新建一个deferred对象
+　　var wait = function(dtd){
+　　　　var tasks = function(){
+　　　　　　alert("执行完毕！");
+　　　　　　dtd.resolve(); // 改变deferred对象的执行状态
+　　　　};
+　　　　setTimeout(tasks,5000);
+　　　　return dtd;
+　　};
+
+
+deferred.reject()方法，作用是将dtd对象的执行状态从"未完成"改为"已失败"，从而触发fail()方法。
+
+$.when(wait(dtd))
+　　.done(function(){ alert("哈哈，成功了！"); })
+　　.fail(function(){ alert("出错啦！"); });
+
+
+jQuery提供了deferred.promise()方法。它的作用是，在原来的deferred对象上返回另一个deferred对象，后者只开放与改变执行状态无关的方法（比如done()方法和fail()方法），屏蔽与改变执行状态有关的方法（比如resolve()方法和reject()方法），从而使得执行状态不能被改变。
+　var dtd = $.Deferred(); // 新建一个Deferred对象
+　　var wait = function(dtd){
+　　　　var tasks = function(){
+　　　　　　alert("执行完毕！");
+　　　　　　dtd.resolve(); // 改变Deferred对象的执行状态
+　　　　};
+
+　　　　setTimeout(tasks,5000);
+　　　　return dtd.promise(); // 返回promise对象
+　　};
+　　var d = wait(dtd); // 新建一个d对象，改为对这个对象进行操作
+　　$.when(d)
+　　.done(function(){ alert("哈哈，成功了！"); })
+　　.fail(function(){ alert("出错啦！"); });
+　　d.resolve(); // 此时，这个语句是无效的
+
+第二种方法
+
+将dtd对象变成wait(）函数的内部对象。
+var wait = function(dtd){
+　　　　var dtd = $.Deferred(); //在函数内部，新建一个Deferred对象
+　　　　var tasks = function(){
+　　　　　　alert("执行完毕！");
+　　　　　　dtd.resolve(); // 改变Deferred对象的执行状态
+　　　　};
+
+　　　　setTimeout(tasks,5000);
+　　　　return dtd.promise(); // 返回promise对象
+　　};
+　　$.when(wait())
+　　.done(function(){ alert("哈哈，成功了！"); })
+　　.fail(function(){ alert("出错啦！"); });
+
+
+另一种防止执行状态被外部改变的方法，是使用deferred对象的建构函数$.Deferred()。
+
+$.Deferred(wait)
+　　.done(function(){ alert("哈哈，成功了！"); })
+　　.fail(function(){ alert("出错啦！"); });
+
+jQuery规定，$.Deferred()可以接受一个函数名（注意，是函数名）作为参数，$.Deferred()所生成的deferred对象将作为这个函数的默认参数。
+
+
+
+
+直接在wait对象上部署deferred接口。
+
+　var dtd = $.Deferred(); // 生成Deferred对象
+　　var wait = function(dtd){
+　　　　var tasks = function(){
+　　　　　　alert("执行完毕！");
+　　　　　　dtd.resolve(); // 改变Deferred对象的执行状态
+　　　　};
+　　　　setTimeout(tasks,5000);
+　　};
+　　dtd.promise(wait);
+　　wait.done(function(){ alert("哈哈，成功了！"); })
+　　.fail(function(){ alert("出错啦！"); });
+　　wait(dtd);
+
+
+
+deferred.then()
+有时为了省事，可以把done()和fail()合在一起写，这就是then()方法。
+　　$.when($.ajax( "/main.php" ))
+　　.then(successFunc, failureFunc );

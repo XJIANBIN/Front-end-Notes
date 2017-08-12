@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>利用iframe 的name值重新加载页面不变来跨域传递数据</title>
+    <script>
+        //name 在浏览器环境中是一个全局/window对象的属性，且当在 frame 中加载新页面（可以是不同域的）时，name 的属性值依旧保持不变（只要不重新赋值）。name属性的值虽然不变，但对它的访问还是受到同域原则，不允许访问。所以我们要把iframe重新定向回原域，这样name的值也没变，并且可以访问了。
+        function proxy(url, func){
+            var isFirst = true,
+                ifr = document.createElement('iframe'),
+                loadFunc = function(){
+                    if(isFirst){
+                        ifr.contentWindow.location = 'about:blank';
+                        isFirst = false;
+                    }else{
+                        func(ifr.contentWindow.name);
+                        ifr.contentWindow.close();
+                        document.body.removeChild(ifr);
+                        ifr.src = '';
+                        ifr = null;
+                    }
+                };
+
+            ifr.src = url;
+            ifr.style.display = 'none';
+            document.body.appendChild(ifr);
+
+            if(ifr.attachEvent){
+                ifr.attachEvent('onload', loadFunc);
+            }else{
+                ifr.onload = loadFunc;
+            }
+
+        }
+    </script>
+</head>
+<body>
+<script>
+    proxy('http://127.0.0.1:9991/demo2.html', function(data){
+        console.log(JSON.parse(data).name);
+        console.log(JSON.parse(data).age);
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+    .clearfix应用于包含浮动子元素的父级元素上
+
+	/!--权衡后的策略--/
+	IE8以上浏览器使用
+	.clearfix:after{content:'';display:block;height:0;overflow:hidden;clear:both;}
+	IE6, 7浏览器使用
+	.clearfix{*zoom:1;}
+
+	更好的办法
+	.clearfix:after{content:"";display:table;clear:both;}
+    .clearfix{*zoom:1;}
+
+<div style="clear:both;"></div>
+    <head>
+<meta charset="utf-8">
+<title>浮动去空格</title>
+<style>
+button { margin: 0; }
+p { clear: both; }
+</style>
+</head>
+
+<body>
+<button>按钮1</button>
+<button>按钮2</button>
+<button>按钮3</button>
+<button>按钮4</button>
+<p><input type="button" id="trigger" value="点击按钮浮动"></p>
+<script>
+var trigger = document.getElementById("trigger"),
+    buttons = document.getElementsByTagName("button");
+
+var length = buttons.length;
+
+if (trigger && length > 0) {
+	trigger.onclick = function() {
+		for (var index = 0; index < length; index += 1) {
+			buttons[index].style["cssFloat" in trigger.style? "cssFloat": "styleFloat"] = "left";
+		}
+	};
+}	
+
+</script>
+</body>
+</html>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+      <script src="jquery.jsonp.js"></script>
+	 <script>
+	    // 需要html5支持
+	    // 1 window.postMessage('数据',域名); 子域监听Message方法
+		// 2 利用 cors  通过设置请求头或者在服务器设置 来解决跨域  'Access-Control-Allow-Credentials', 'true'     //允许凭证,解决session跨域丢失问题
+		// 其他
+		// 3 利用window.name 跨域
+		// 4 jsonp
+		// 5 document.domain 只要把子页面的document.domain都指向主域就可以了，比如document.domain='foo.com';   //设置好后父页面和子页面就可以像同一个域下两个页面之间访问了。父页面通过ifr.contentWindow就可以访问子页面的window，子页面通过parent.window或parent访问父页面的window，接下来可以进一步获取dom和js。
+		// 6 ie6/7 window.navigator  子域和父域共享同一个对象，通过增加对象属性或方法进行调用
+		
+	 </script>
+    <script>
+    // $.ajax({
+    //         url: 'http://www.gzjponline.com/Jp/GetSchedule',
+    //         type: 'get',
+    //         dataType: 'jsonp',
+    //         data: {
+    //             start: '1490457600',
+    //             end: '1494086400'
+    //         },
+    //         success: function(data) {
+    //             console.log(data.msg);
+    //         }
+    //     })
+    //     .done(function(data) {
+    //         console.log(data.msg);
+    //     })
+    //     .fail(function(XMLHttpRequest, textStatus, errorThrown,data) {
+    //         console.log(XMLHttpRequest.status);
+    //         console.log(XMLHttpRequest.readyState);
+    //         console.log(textStatus);
+    //         console.log(data);
+    //     })
+    //     .always(function() {
+    //         console.log("complete");
+    //     });
+
+    // $.getJSON('http://www.gzjponline.com/Jp/GetSchedule?callback=?', {
+    //     start: '1490457600',
+    //     end: '1494086400'
+    // }, function(data) {
+    //     console.log(1);
+    //     console.log(data.msg);
+    // });
+
+    // var xhr = new XMLHttpRequest();
+    // 	xhr.open("POST", "http://www.gzjponline.com/Jp/GetSchedule?start=1490457600&end=1494086400", true);
+    // 	xhr.onreadystatechange = function() {
+    //     if (xhr.readyState == 4) {  //xhr请求完成，200是服务器成功返回 304读取缓存
+    //         document.body.innerHTML = xhr.responseText;
+    //     }
+    // }
+    // xhr.send();
+    // 
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>

@@ -1,0 +1,98 @@
+浅拷贝只是简单的对值进行拷贝一份，如果value是对象，复制可以看成复制指针，也就是相当于拷贝副本和源指向相同的数据，改变一份，同时改变
+
+深拷贝用递归进行，重新生成对象，避免上面的问题
+
+var source = {
+    "request": "login",
+    "param": {
+        "username": "xxx@qq.com",
+
+
+        "password": "1231231",
+        "power": [1, 2, 3],
+        "tag": 120
+    }
+};
+var request = new Object();
+
+function
+
+copy(source) {
+    var result = {};
+    for (var key in source) {
+        result[key] = typeof source[key] ===
+
+            "object" ? copy(source[key], result[key]) : source[key];
+    }
+    return result;
+}
+copy(source);
+
+
+
+
+浅拷贝
+
+function shallowCopy(src) {
+  var dst = {};
+  for (var prop in src) {
+    if (src.hasOwnProperty(prop)) {
+      dst[prop] = src[prop];
+    }
+  }
+  return dst;
+}
+
+
+深拷贝
+注意用Object.assign()方法不能进行深度拷贝，因为他拷贝的是属性值，如果属性值是一个指向对象的引用，它也只拷贝那个引用值。
+
+    function deepCopy(obj) {
+      var val = [];
+      for (key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          if (typeof obj[key] === 'number' || typeof obj[key] === 'string' || typeof obj[key] === 'Boolean' || typeof obj[key] === 'undefinded' || typeof obj[key] === 'null') {
+            val[key] = obj[key];
+          } else {
+            val[key] = deepCopy(obj[key]);
+          }
+        }
+      }
+      return val;
+    }
+
+
+    function deepCopy(obj) {
+      var val = JSON.parse(JSON.stringify(obj));
+      return val;
+    }
+    局限性： 1,
+    如果对象的属性不可序列化， 例如函数， 将会丢失
+    2 丢失原型链
+    3 诸如RegExp对象（不是Json格式）是无法通过这种方式深复制的
+
+
+
+function clone(obj) {
+      if (!(obj instanceof Object)) {
+        return obj;
+      }
+      var objClone;
+      var Constructor = obj.constructor;
+      switch (Constructor) {
+        case RegExp:
+          objClone = new Constructor(obj);
+          break;
+        case Date:
+          objClone = new Constructor(obj.getTime());
+          break;
+        default:
+          objClone = new Constructor();
+      }
+
+      for(var prop in obj){
+        objClone[prop] = clone(obj[prop]);
+      }
+
+      return objClone;
+    }

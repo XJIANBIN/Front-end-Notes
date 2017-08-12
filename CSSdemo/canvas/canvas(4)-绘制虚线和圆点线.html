@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>绘制虚线和圆点线</title>
+  <style>
+    #myCanvas{
+      border: 1px solid #ea0773;
+    }
+  </style>
+</head>
+<body>
+<canvas id="myCanvas" width="300" height="300">
+  您的浏览器不支持H5 canvas,请更换浏览器体验!
+</canvas>
+<script>
+  //大漠教程  http://mp.weixin.qq.com/s/SEkwLkXq6QaEYQhLtaLznA
+
+ //js创建canvas
+ // (function(){
+ //   var canvas = document.createElement('canvas');
+ //   document.body.appendChild('canvas');
+ //   canvas.id = 'my_canvas';
+ //   canvas.width = 400;
+ //   canvas.height = 400;
+ // })();
+
+ // 检测浏览器支持情况
+window.addEventListener('load', eventWindowLoaded, false);
+
+function eventWindowLoaded(){
+  canvasApp();
+}
+
+ function canvasSupport(e) {
+   return !!e.getContext;
+ }
+
+function canvasApp() {
+  var myCanvas = document.getElementById('myCanvas');
+  if(!canvasSupport(myCanvas)) {
+    return ;
+  }
+  var ctx = myCanvas.getContext('2d');
+  function drawScreen(){
+    //ctx.setLineDash(segments);  接受一个参数segments，
+    //这个参数是一个Array数组。一组描述交替绘制线段和间距（坐标空间单位）长度的数字。如果数组元素的数量是奇数，
+    //数组的元素会被复制并重复。例如，[5,15,25]会变成[5,15,25,5,15,25]。
+    ctx.setLineDash([5,15,20,5]);
+    ctx.lineWidth = 4;
+    ctx.fillStyle = '#00334e';
+   // 绘制虚线
+    ctx.beginPath();
+    ctx.moveTo(10, 100);
+    ctx.lineTo(400, 100);
+    ctx.stroke();
+  }
+  //drawScreen();
+  ctx.dottedLine(10, 100, 200, 200);
+}
+
+
+// 扩展canvas 画圆虚线API
+ var canvasPrototype = window.CanvasRenderingContext2D && CanvasRenderingContext2D.prototype;
+ canvasPrototype.dottedLine = function(x1, y1, x2, y2, interval){
+     if(!interval) {
+       interval  = 5;
+     }
+
+     var isHonrizental  = true;
+      if(x1 == x2) {
+        isHonrizental = false;
+      }
+
+      var len = isHonrizental? x2 -x1 : y2-y1;
+      this.moveTo(x1, y1);
+      var progress = 0;
+      while(len > progress) {
+        progress += interval;
+        if(progress >　len) {
+          progress = len;
+        }
+        if(isHonrizental) {
+          this.moveTo(x1 +　progress, y1);
+          this.arc(x1 + progress, y1, 1, 0 ,Math.PI * 2, true);
+          this.fill();
+        }else {
+          this.moveTo(x1, y1 + progress);
+          this.arc(x1, y1 +　progress, 1, 0, Math.PI * 2, true);
+          this.fill();
+        }
+   }
+ }
+
+</script>
+</body>
+</html>

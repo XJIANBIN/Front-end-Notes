@@ -1,0 +1,14 @@
+二、将arguments转换为真正的数组的方法
+
+1  Array.prototype.slice.apply(arguments)这是运行效率比较快的方法（看别人资料说的）,为什么不是数组也可以，因为arguments对象有length属性，而这个方法会根据length属性,返回
+一个具有length长度的数组。若length属性不为number，则数组长度返回0;所以其他对象只要有length属性也是可以的哟，如对象中有属性0,对应的就是arr[0],即属性为自然数的number就是对应的数组的下标，若该值大于长度，当然要割舍啦。
+2 Array.prototype.concat.apply(thisArg,arguments)。,thisArg是新的空数组，apply方法将函数this指向thisArg，arguments做为类数组传参给apply。根据apply的方法的作用,
+即将Array.prototype.slice方法在指定的this为thisArg内调用，并将参数传给它。用此方法注意:若数组内有数组，会被拼接成一个数组。原因是apply传参的特性。
+
+3 我自己想了个方法，利用Array的构造函数,如Array(1,2,3,4,5,6);可以返回一个传入的参数的数组，那Array.apply(thisArg,arguments)也可以将arguments转化为数组，
+果然实验是可以的;有没有什么影响呢，就是乱用了构造函数，但这也是js的特性嘛。构造函数也是函数。用此方法注意:若数组内有数组，会被拼接成一个数组。原因是apply传参的特性。
+
+4 用循环，因为arguments类似数组可以使用arguments[0]来访问实参，那么将每项赋值给新的数组每项，直接复制比push要快，若实参有函数或者对象，就要深拷贝。
+ 
+
+三、综上所述，最完美的方法应该是Array.prototype.slice.apply(arguments)了

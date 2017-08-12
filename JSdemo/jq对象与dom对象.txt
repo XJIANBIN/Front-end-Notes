@@ -1,0 +1,35 @@
+jQuery对象转成DOM对象： 
+两种转换方式将一个jQuery对象转换成DOM对象：[index]和.get(index); 
+(1)jQuery对象是一个数据对象，可以通过[index]的方法，来得到相应的DOM对象。 
+如：var $v =$("#v") ; //jQuery对象 
+var v=$v[0]; //DOM对象 
+alert(v.checked) //检测这个checkbox是否被选中 
+(2)jQuery本身提供，通过.get(index)方法，得到相应的DOM对象 
+如：var $v=$("#v"); //jQuery对象 
+var v=$v.get(0); //DOM对象 
+alert(v.checked) //检测这个checkbox是否被选中 
+
+
+
+DOM对象转成jQuery对象: 
+对于已经是一个DOM对象，只需要用$()把DOM对象包装起来，就可以获得一个jQuery对象了。$(DOM对象) 
+如：var v=document.getElementById("v"); //DOM对象 
+var $v=$(v); //jQuery对象 
+转换后，就可以任意使用jQuery的方法了。 
+
+
+通过以上方法，可以任意的相互转换jQuery对象和DOM对象。需要再强调注意的是：DOM对象才能使用DOM中的方法，jQuery对象是不可以用DOM中的方法。
+
+
+ var a = $(".pcsTaskDedail_a, .task_btn_a");
+  Array.prototype.forEach.call(a, function (element, index) {
+		console.log(element);dom对象 也就是一个个标签和里面的东西
+         console.log($(element)); jq对象 包括各种属性
+         //element.attr("href", element.attr("href").replace("proTaskDetail.html", "proSource.html") + "&pageType=protaskdedail");
+         //console.log(element.attr("href"));
+ }); 
+ 
+ jq 也有遍历方法
+ 
+ $.each(a,function(i,elemt){})
+ $("").each(function(i){})

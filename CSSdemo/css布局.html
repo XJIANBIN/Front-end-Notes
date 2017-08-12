@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    div {
+      height: 100px;
+      margin-top: 10px;
+    }
+    div:nth-of-type(1){
+      margin-top: 0px;
+    }
+    .header {
+      width: auto;
+      background: red;
+    }
+
+    .slidebar {
+      width: 200px;
+      background: green;
+    }
+
+    .content {
+      float: left;
+      width: 100%;
+      margin-left: 200px;
+      background: blue;
+    }
+
+    @media screen and (max-width: 600px) {
+      .slidebar {
+        float: none;
+        width: auto;
+        background: green;
+      }
+      .content {
+        margin-left: 0px;
+        background: blue;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <h1>header</h1>
+  </div>
+  <div class="slidebar">
+    <h1>slidebar</h1>
+  </div>
+  <div class="content">
+    <h1>content</h1>
+  </div>
+</body>
+
+</html>

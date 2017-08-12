@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>关于js加载状态</title>
+
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/vuex@2.0.0"></script>
+  <script src="https://code.angularjs.org/latest/angular.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+  <script>
+    // 参考文章
+    // IE下script标签的readyState属性   http://www.cnblogs.com/rubylouvre/p/4277408.html
+    // 又说 动态加载 script. ie 下 script Element 的 readyState状态   http://www.cnblogs.com/_franky/archive/2010/06/20/1761370.html
+
+    //通过script节点加载目标模块
+    var node = DOC.createElement("script")
+    var timeID
+    var supportLoad = "onload" in node
+    var onEvent = supportLoad ? "onload" : "onreadystatechange"
+    node[onEvent] = function onLoad() {
+        if (!supportLoad && !timeID && /complete|loaded/.test(node.readyState)) {
+            timeID = setTimeout(onLoad)
+            return
+        }
+        if (supportLoad || timeID) {
+            clearTimeout(timeID)
+            //你的代码
+        }
+    }
+
+    head.insertBefore(node, head.firstChild) //chrome下第二个参数不能为null
+    node.src = url //插入到head的第一个节点前，防止IE6下head标签没闭合前使用appendChild抛错
+
+  </script>
+  <script>
+
+    // 获取当前执行的script ，但是并没有什么作用，因为执行这个方法的时候 获取的总是当前的 script
+    function getInteractiveScript() {
+      if (document.currentScript) {
+        console.log(document.currentScript);
+        return document.currentScript;
+      }
+      var els = document.getElementsByTagName("script");
+      console.log(els)
+      for (var i = 0, el; el = els[i++];) {
+        console.log(el.readyState)
+        if (el.readyState === 'interactive') {
+          return el
+        }
+      }
+      return null
+    }
+    getInteractiveScript();
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

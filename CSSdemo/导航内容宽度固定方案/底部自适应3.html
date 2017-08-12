@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-status-bar-style" content="black">
+    <title>只适合字数相等</title>
+    <style>
+   	body{
+   		margin:0;
+   		padding: 0;
+   	}
+    div {
+        width: 100%;
+        height: 40px;
+    }
+    
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+    
+    li {
+        background-color: green;
+        color: White;
+        border: solid 1px white;
+        /*实现原因*/
+        width: 1%;
+        position: relative;/*或者换成 float: none;*/
+        display: table-cell;
+
+    }
+
+    li a{
+    	text-decoration: none;
+    }
+    </style>
+    </style>
+</head>
+
+<body>
+    <div>
+        <ul>
+            <li><a href="">CELL 1</a></li>
+            <li><a href="">CELL 2</a></li>
+            <li><a href="">CELL 3</a></li>
+            <li><a href="">CELL 4</a></li>
+        </ul>
+    </div>
+</body>
+
+</html>

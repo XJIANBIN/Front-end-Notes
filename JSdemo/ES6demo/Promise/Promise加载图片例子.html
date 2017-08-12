@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Promise加载图片例子</title>
+    <script>
+    function loadImageAsync(url) {
+        return new Promise(function(resolve, reject) {
+            throw("2");
+            var image = new Image();
+            image.onload = function() {
+                resolve(image);
+            };
+
+            image.onerror = function() {
+                reject(new Error('Could not load image at ' + url));
+            };
+
+            image.src = url;
+        });
+    }
+   
+     loadImageAsync("adele.jpg").then(
+      ()=>{console.log("图片加载成功")},
+      ()=>{console.log("图片加载失败")}
+      )
+     .catch((error)=>console.log(error));
+   
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>BFS和DFS遍历节点https://zhuanlan.zhihu.com/p/26420034</title>
+    <style>
+    body{
+    	text-align: center;
+    }
+    #widthTraverse {
+        width: 300px;
+        height: 400px;
+        /*float: left;*/
+        display: inline-block;
+        border: 1px solid #ff2;
+        vertical-align: top;
+    }
+    
+    #deepTraverse {
+        width: 300px;
+        height: 400px;
+        /*float: left;*/
+        display: inline-block;
+        border: 1px solid #ff2;
+        vertical-align: top;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="widthTraverse">
+        <h1>广度优先</h1>
+    </div>
+    <div id="deepTraverse">
+        <h1>深度优先</h1>
+    </div>
+    <div class="root">
+        <div class="container">
+            <section class="slidebar">
+                <ul class="menu"></ul>
+            </section>
+            <section class="main">
+                <article class="post"></article>
+                <p class="copyright"></p>
+            </section>
+        </div>
+    </div>
+    <!-- <script>
+		const traverse = (ndRoot) => {
+			const  queue = [ndRoot]; //变成数组对象，使有length
+
+			while(queue.length){
+				const node = queue.shift();
+				//const node = queue.splice(0,1)[0];
+				//const node = queue.slice(0); //这个不行
+				printInfo(node);
+				if (!node.children.length) {
+					continue;
+				}
+				Array.from(node.children).forEach( x => queue.push(x));
+			}
+		};
+		const printInfo = (node) => {
+			console.log(node.tagName,`.${node.className}`);
+		}
+		traverse(document.querySelector('.root'));
+	</script> -->
+    <script>
+    //广度优先
+    const traverse = (ndRoot) => {
+        const queue = [ndRoot];
+        while (queue.length) {
+            const node = queue.shift();
+            printInfo(node);
+            if (!node.children.length) {
+                continue;
+            }
+            Array.from(node.children).forEach(x => {
+                queue.push(x);
+            });
+        }
+    };
+    const printInfo = (node) => {
+        document.getElementById("widthTraverse").innerHTML+=(node.tagName, `.${node.className}` + "</br>");
+    }
+    traverse(document.querySelector('.root'));
+    </script>
+    <script>
+    //深度优先
+    const deepTraverse = (ndRoot) => {
+    	Array.prototype.forEach.call(ndRoot.children,function(elem,index){
+    		 deepTraverse(elem);
+    	})
+        // for (var i = 0, length = ndRoot.children.length; i < length; i++) {
+        //     deepTraverse(ndRoot.children[i]);
+        // }
+        printInfo2(ndRoot);
+    };
+    const printInfo2 = (node) => {
+        document.getElementById("deepTraverse").innerHTML+=(node.tagName, `.${node.className}` + '</br>');
+    }
+    deepTraverse(document.querySelector('.root'));
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Promise实现Ajax操作</title>
+</head>
+
+<body>
+    <script>
+    //请主要想运行此程序最好在火狐浏览器，或者发布到服务器，因为谷歌浏览器有安全限制，不允许请求本地资源，要想解决，请自行百度
+    var getJson = function(url) {
+
+        var promise = new Promise(function(resolve, reject) {
+            var client = new XMLHttpRequest();
+            client.open("GET", url);
+            client.onreadystatechange = handler;
+            client.responseType = "json";
+            client.setRequestHeader("Accept", "application/json");
+            client.send();
+
+            function handler() {
+                if (this.readyState !== 4) {
+                    return;
+                }
+                if (this.status === 200) {
+                    resolve(this.response);
+                } else {
+                    reject(new Error(this.statusText));
+                }
+            };
+        });
+
+        return promise;
+    };
+    getJson("package.json").then(function(json) {
+            console.log(json);
+        }, function(error) {
+            console.log("出错了", +error)
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
+    </script>
+</body>
+
+</html>

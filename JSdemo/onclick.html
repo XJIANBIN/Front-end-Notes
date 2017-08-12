@@ -1,0 +1,28 @@
+<html>
+	<head>
+	   <script>
+			function f(event){
+			console.log(event);  //<div style="width:100px;height:100px;background:red;" onclick="f(this)"></div>
+			}
+	  </script>
+	  
+	</head>
+	<body>
+	<div id="ads" style="width:100px;height:100px;background:red;" onclick="f(event)"  ></div> 
+	</body>
+	 <script>
+			<!-- var d=document.getElementById("ads"); -->
+			<!-- d.addEventListener("click",function(){ -->
+			<!-- console.log(event);   //MouseEvent {isTrusted: true, screenX: 105, screenY: 148, clientX: 105, clientY: 58…} -->
+			<!-- }) -->
+	 </script>
+</html>
+
+<!--总结-->
+<!--当在html页面标签方法调用内传入this，在方法内可以或得该标签-->
+<!--当在html页面标签方法调用内传入event,在方法内部可以获得该点击对象-->
+
+
+
+<!--原生js可以绑定事件，回调方法内console.log(this) 获得<div style="width:100px;height:100px;background:red;" onclick="f(this)"></div> -->
+<!--原生js可以绑定事件，回调方法内console.log(event) 获得MouseEvent {isTrusted: true, screenX: 95, screenY: 151, clientX: 95, clientY: 61…}-->

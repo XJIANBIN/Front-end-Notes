@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-status-bar-style" content="black">
+    <title>图片懒加载</title>
+     <script>
+    (function(window, undefined) {
+        // var $ = window.jQuery || window.Cowboy || (window.Cowboy = {}),
+       // var jq_throttle;
+        throttle  = function(delay, no_trailing, callback, debounce_mode) {
+        	//这里参数运行方法时候是一直存在的，因为在子方法里面保存着对父函数的引用（闭包概念），所以这片内存不会被销毁。
+            var timeout_id,   //定时器
+                last_exec = 0;  //上一次调用时间
+            if (typeof no_trailing !== 'boolean') {
+                debounce_mode = callback;  
+                callback = no_trailing;
+                no_trailing = undefined;
+            }
+            function wrapper() {
+                var that = this,
+                    elapsed = +new Date() - last_exec, //间隔时间
+                    args = arguments; //我们绑定事件的时候，事件执行时会传入事件对象，这里参数指事件对象
+                console.log(args);
+
+                function exec() {
+                	console.log("回调执行");
+                    last_exec = +new Date();  //指的是最后一次调用时间
+                    callback.apply(that, args);  //执行原来的函数，并把作用域及参数传进去
+                };
+
+                function clear() {
+                    timeout_id = undefined;
+                };
+                if (debounce_mode && !timeout_id) {
+                    exec();
+                }
+                timeout_id && clearTimeout(timeout_id);  //如果定时器不为空就清空定时器
+                if (debounce_mode === undefined && elapsed > delay) {
+                	  exec();
+                } else if (no_trailing !== true) {
+                    timeout_id = setTimeout(debounce_mode ? clear : exec, debounce_mode === undefined ? delay - elapsed : delay);
+                }
+            };
+            // if ($.guid) {
+            //     wrapper.guid = callback.guid = callback.guid || $.guid++;
+            // }
+            // 整数guid是一个内部的jQuery参数，这将有助于以后解除绑定的功能。但在lodash/underscore 中并没有使用，所以暂时不知道不使用这个参数会有什么后果。
+            return wrapper;  //返回函数 
+        };
+        //第二个参数决定回调函数的执行时间，任何非flase表示回调在一开始执行。false表示在时间间隔最后调用
+        //这里参考coodpen上面两个示例动画，很形象（科学上网环境）
+        //http://codepen.io/dcorb/pen/GZWqNV （任何非flase）
+        //http://codepen.io/dcorb/pen/KVxGqN   (false)
+        debounce = function(delay, at_begin, callback) {
+            return callback === undefined ? throttle(delay, at_begin, false) : throttle(delay, callback, at_begin !== false);
+        };
+
+    })(this);
+
+
+    </script>
+    <style>
+    ul {
+        padding: 0;
+        margin: 0;
+    }
+    
+    .item {
+        list-style: none;
+    }
+    
+    .item img {
+    	height: 400px;
+        width: 90%;
+        margin: 0 auto;
+        display: block;
+    }
+    </style>
+    <script src="jquery-1.9.1.min.js"></script>
+</head>
+
+<body>
+    <ul></ul>
+    <script>
+    //加载图片
+    function loadImg() {
+    	console.log("load");
+        var winHeight = $(window).height();
+        var imgHeight = 320;
+        var imgItems = $("ul img");
+        imgItems.each(function(index, img) {
+            var $img = $(img);
+            var top = img.getBoundingClientRect().top;
+            if (top <= winHeight) {
+                if ($img.data("load") == 1) return;
+                $img.attr('src', $img.data('src'));
+                $img.data('load', 1);
+            }
+        });
+    }
+
+    //产生图片
+    function genLazyImg() {
+        var str = "";
+        for (var i = 2; i < 20; i++) {
+            var name = "img/" + i + ".jpeg";
+            var img = "<li class='item'><img data-src='" + name + "' src='img/1.jpeg' /></li>";
+            str += img;
+        }
+        return str;
+    }
+
+    var imgs = genLazyImg();
+    $("ul").html(imgs);
+    loadImg();
+
+    // window.onscroll=function(){
+    // 	console.log(1);
+    // 	loadImg();
+    // }
+
+    //滚动性能提升之节流函数(豹哥提供)
+    // function _throttle(fn, delay, scope) {
+    //     delay || (delay = 250);
+    //     var last, deferTimer;
+    //     return function() {
+    //         var context = scope || this;
+    //         var now = +new Date(),
+    //             args = arguments,
+    //             done_fn = function(immediate) {
+    //                 last = immediate ? now : +new Date();
+    //                 deferTimer = null;
+    //                 fn.apply(context, args);
+    //             };
+    //         if (last === undefined || (now - last) >= delay) {
+    //             clearTimeout(deferTimer);
+    //             return done_fn(true);
+    //         }
+    //         //deferTimer !==null 就会阻止一次动作结束后，新一轮的动作在结束时，应该还会有一次动作的行为
+    //         deferTimer === null && (deferTimer = setTimeout(done_fn, delay));
+    //     };
+    // }
+
+
+
+
+    //用法 
+    // var lazyLoad=_throttle(function(){
+    // 	console.log(1);
+    // 	loadImg();
+    // });
+    
+
+    // window.onscroll=function(){
+    // 	lazyLoad();
+    // }
+    
+
+
+ 	
+window.onscroll=throttle(250,false,loadImg);
+    </script>
+</body>
+
+</html>

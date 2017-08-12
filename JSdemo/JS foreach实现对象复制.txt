@@ -1,0 +1,13 @@
+function copy(obj){
+  var copy = Object.create(Object.getPrototypeOf(obj));
+  var ProName=Object.getOwnPropertyNames(obj);
+  
+  propNames.forEach(function(name){
+  var desc=Object.getOwnPropertyDescriptor(obj,name);
+  object.defineProperty(copy,name,desc);
+  });
+  return copy;
+}
+
+var obj1 = { a: 1, b: 2 };
+var obj2 = copy(obj1);

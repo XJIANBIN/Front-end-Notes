@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+  <script>
+    (function($) {
+      var printAreaCount = 0;
+      $.fn.printArea = function() {
+        var ele = $(this);
+        var idPrefix = "printArea_";
+        removePrintArea(idPrefix + printAreaCount);
+        printAreaCount++;
+        var iframeId = idPrefix + printAreaCount;
+        var iframeStyle = 'position:absolute;width:0px;height:0px;left:-500px;top:-500px;';
+        iframe = document.createElement('IFRAME');
+        $(iframe).attr({
+          style: iframeStyle,
+          id: iframeId
+        });
+        document.body.appendChild(iframe);
+        var doc = iframe.contentWindow.document;
+        $(document).find("link").filter(function() {
+          return $(this).attr("rel").toLowerCase() == "stylesheet";
+        }).each(
+          function() {
+            doc.write('<link type="text/css" rel="stylesheet" href="' +
+              $(this).attr("href") + '" >');
+          });
+        doc.write('<div class="' + $(ele).attr("class") + '">' + $(ele).html() +
+          '</div>');
+        doc.close();
+        var frameWindow = iframe.contentWindow;
+        frameWindow.close();
+        frameWindow.focus();
+        frameWindow.print();
+      }
+      var removePrintArea = function(id) {
+        $("iframe#" + id).remove();
+      };
+    })(jQuery);
+  </script>
+  <title>打印</title>
+  <style>
+  /*第一种方案*/
+    /*@media print {
+  body * {
+    visibility: hidden;
+  }
+  #section-to-print, #section-to-print * {
+    visibility: visible;
+  }
+  #section-to-print {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}*/
+
+    .d {
+      width: 100%;
+      height: 300px;
+    }
+
+    .d1 {
+      background: red;
+    }
+
+    .d2 {
+      background: #abddcc;
+    }
+
+    .d3 {
+      background: blue;
+    }
+
+    .d4 {
+      background: orange;
+    }
+  </style>
+</head>
+
+<body>
+  <button onclick="javascript:print();">打印</button>
+  <div class="d d1">我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我 我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我 我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我 我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我
+    我我我我我我我我我我我我
+  </div>
+  <div class="d d2">是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是 是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是 是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是 是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是
+    是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是是
+  </div>
+  <div id='section-to-print' class="d d3">大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大 大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大 大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大 大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大
+    大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大大
+  </div>
+  <div class="d d4">傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻 傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻 傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻 傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻
+    傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻傻
+  </div>
+    <div style="background:yellow;display:inline;margin-bottom:20px;padding-bottom:10px;">asdfasdf</div>
+    <div style="background:red;display:inline-block;margin-bottom:10px;">asdfasdfasdf</div>
+    <div style="background:blue">asdfasdfasdf</div>
+</body>
+<script>
+// 第二种方案 使用jq插件  http://plugins.jquery.com/PrintArea/
+  function print(){
+    $("#section-to-print").printArea();
+  }
+
+
+  // 第三种方案
+  // <div id="printtableArea">
+  //   <h1>Print me</h1>
+  // </div>
+  // <input type="button" onclick="printDiv('PrinttableArea')" value="print a div">
+   //
+  //  function printDiv(divName){
+  //    var printContents = document.getElementById(divName).innerHTML;
+  //    var originalContents  =document.body.innerHTML;
+  //    document.body.innerHTML = printContents;
+  //    window.print();
+  //    document.body.innerHTML = originalContents;
+  //  }
+
+  //第四种方案，使用 Print.js   http://printjs.crabbly.com/
+
+</script>
+
+</html>

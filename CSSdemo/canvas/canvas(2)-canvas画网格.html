@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>canvas画网格</title>
+  <style>
+    #myCanvas{
+      border: 1px solid #ea0773;
+    }
+  </style>
+</head>
+<body>
+<canvas id="myCanvas" width="300" height="300">
+  您的浏览器不支持H5 canvas,请更换浏览器体验!
+</canvas>
+<script>
+  //大漠教程  http://mp.weixin.qq.com/s/SEkwLkXq6QaEYQhLtaLznA
+
+ //js创建canvas
+ // (function(){
+ //   var canvas = document.createElement('canvas');
+ //   document.body.appendChild('canvas');
+ //   canvas.id = 'my_canvas';
+ //   canvas.width = 400;
+ //   canvas.height = 400;
+ // })();
+
+ // 检测浏览器支持情况
+window.addEventListener('load', eventWindowLoaded, false);
+
+function eventWindowLoaded(){
+  canvasApp();
+}
+
+ function canvasSupport(e) {
+   return !!e.getContext;
+ }
+
+function canvasApp() {
+  var myCanvas = document.getElementById('myCanvas');
+  if(!canvasSupport(myCanvas)) {
+    return ;
+  }
+  var ctx = myCanvas.getContext('2d');
+  function drawScreen(){
+    //https://mp.weixin.qq.com/s/ULOxi5Diwba5NOgCZyGOjw
+    //这里存在一个像素边界问题，即1像素的线段绘制在两个像素之间各占0.5像素，会被扩展成一像素，即一像素直线变两像素，解决方法，避免在像素边界，
+    //即+0.5像素即可
+    // 确定横线竖线距离
+    var dx = 50,
+        dy = 50,
+        xy = 10;
+    //初始化坐标原点
+    var x = 0,
+        y = 0,
+        h = myCanvas.height;
+        w = myCanvas.width;
+        // 画横线
+        //ctx.lineWidth = 1;
+    while (y < h) {
+        y = y + dy;
+        // ctx.moveTo(x, y);//设置当前位置并开始一条新的子路径。
+        // ctx.lineTo(w, y);//为当前的子路径添加一条直线线段。
+        // ctx.stroke();//沿着当前路径绘制或画一条直线。
+        ctx.font = '1px Calibri';
+        ctx.fillText(xy, x, y);
+        xy += 10;
+    }
+    // 画竖线
+    y = 0;
+    xy = 10;
+    while(x < w) {
+      x = x + dx;
+      // ctx.moveTo(x, y);
+      // ctx.lineTo(x, h);
+      // ctx.stroke();
+      ctx.fillText(xy, x, 10);
+      xy += 10;
+    }
+
+   DrawGrid('#2e6d7b', 50, 50);
+  }
+
+  //封装方法
+  function DrawGrid(color, stepX, stepY){
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1;
+    for(var i = stepX + 0.5; i < myCanvas.width; i += stepX) {
+      ctx.beginPath();
+      ctx.moveTo(i, 0);
+      ctx.lineTo(i, myCanvas.height);
+      ctx.stroke();
+    }
+    for(var i = stepY + 0.5; i< myCanvas.height; i += stepY) {
+      ctx.beginPath();
+      ctx.moveTo(0, i);
+      ctx.lineTo(myCanvas.width, i);
+      ctx.stroke();
+    }
+  }
+
+
+  drawScreen();
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+博客文章//http://www.cnblogs.com/wangfupeng1988/p/4001284.html
+
+图 http://images.cnitblog.com/blog/138012/201409/181637013624694.png
+
+每个函数都有一个属性叫做prototype。这个prototype的属性值是一个对象（属性的集合），默认就有一个constructor的属性。指向函数本身
+
+
+Fn是一个函数，fn对象从Fn函数new出来的，这样fn对象
+就可以调用Fn.prototype属性。
+
+因为每一个对象都有一个隐藏的属性--‘_proto_’，这个属性引用了创建这个对象的函数的prototype。即fn._proto_= Fn.prototype
+
+
+每一个对象都有一个_proto_属性，指向创建该对象的函数的prototype
+
+自定义函数的prototype._proto_指向的就是Object.prototype
+
+自定义函数的_proto_指向的是Function.prototype，
+Object._proto_指向的是Function.prototype,
+Function._proto_指向的是Function.prototype
+Function.prototype._proto_指向的是Object.prototype
+
+Object instanceof Function  //true
+Function instanceof Object  //true
+Function instanceof Function  // true
+Object instanceof Function  //true
+
+
+Object.prototype也是对象，它的_proto_指向的却是null
+
+Instanceof 运算符的第一个变量是一个对象，第二个变量一般是一个函数。
+Instanceof的判断规则是：沿着A的__proto__这条线来找，同时沿着B的prototype这条线来找，如果两条线能找到同一个引用，即同一个对象，那么就返回true。如果找到终点还未重合，则返回false。
+
+访问一个对象的属性时，先在基本属性中查找，如果没有，再沿着__proto__这条链向上找，这就是原型链。
+
+
+Function.prototype和Function.__proto__都指向Function.prototype，这就是鸡和蛋的问题怎么出现的。
+Object.prototype.__proto__ === null，说明原型链到Object.prototype终止。
+

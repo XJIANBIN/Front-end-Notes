@@ -1,0 +1,37 @@
+public void ProcessRequest(HttpContext context)
+        {
+            HttpWebRequest request = null;
+            string jsonStr = "";
+            request = WebRequest.Create("https://open.ys7.com/api/lapp/live/video/list") as HttpWebRequest;
+            request.Method = "Post";
+
+            request.ContentType = "application/x-www-form-urlencoded";
+            string param = string.Format("&{0}={1}", "accessToken", "at.daj20noj1sjmy3u601184aoq0n7xv74x-3urvwvd71t-0javko1-q70voxngg");
+            byte[] data = Encoding.UTF8.GetBytes(param);
+            using (Stream stream = request.GetRequestStream())
+            {
+                stream.Write(data, 0, data.Length);
+            }
+            HttpWebResponse response = null;
+            try
+            {
+
+                response = request.GetResponse() as HttpWebResponse;
+                Stream resStream = response.GetResponseStream();
+                
+                using (StreamReader sr = new StreamReader(resStream))
+                {
+                    jsonStr = sr.ReadToEnd();
+                }
+                
+            }
+            catch (WebException wex)
+            {
+
+                response = wex.Response as HttpWebResponse;
+            }
+
+            context.Response.ContentType = "text/plain";
+            
+            context.Response.Write("");
+        }

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>线型http://mp.weixin.qq.com/s/NRcDviLtsY2kJtylsqEbfA</title>
+  <style>
+    #myCanvas {
+      border: 1px solid #ea0773;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="myCanvas" width="600" height="600">
+  您的浏览器不支持H5 canvas,请更换浏览器体验!
+</canvas>
+  <script>
+    //大漠教程  http://mp.weixin.qq.com/s/SEkwLkXq6QaEYQhLtaLznA
+
+    //js创建canvas
+    // (function(){
+    //   var canvas = document.createElement('canvas');
+    //   document.body.appendChild('canvas');
+    //   canvas.id = 'my_canvas';
+    //   canvas.width = 400;
+    //   canvas.height = 400;
+    // })();
+
+    // 检测浏览器支持情况
+    window.addEventListener('load', eventWindowLoaded, false);
+
+    function eventWindowLoaded() {
+      canvasApp();
+    }
+
+    function canvasSupport(e) {
+      return !!e.getContext;
+    }
+
+
+    // 1线宽 ： 在Canvas中绘制1个像素的线条时，坐标位置需要错开0.5个像素。
+    // 2线段端点：线帽 canvasRenderingContext2D.lineCap
+    // butt: 方形结束
+    // round:圆形结束
+    // square 以方形结束，但增加了一个宽度与线段相同，高度是线段厚度一半的矩形区域
+    // 线段连接点 CanvasRenderingContext2D.lineJoin
+    // * round 通过填充一个额外的，圆心在相连部分末端的扇形，绘制拐角的形状。圆角的半径是线段的宽度
+    // * bevel 在相连部分的末端填充一个额外的以三角形为底的区域，每个部分都有各自独立的矩形拐角
+    // * miter  通过延伸相连部分的外边缘，使其相交于一点，形成一个额外的菱形区域。这个设置可以通过miterLimit属性看到效果
+    //         miterLimit属性，表示连接点（矩形的斜线）计算方式 ,斜线的长度与二分之一线宽的比值
+    function canvasApp() {
+      var myCanvas = document.getElementById('myCanvas');
+      if (!canvasSupport(myCanvas)) {
+        return;
+      }
+      var ctx = myCanvas.getContext('2d');
+
+      function drawScreen() {
+        ctx.strokeStyle = 'red';
+        ctx.lineWidth = 10;
+        drawStar(ctx, 300, 300, 100, 50);
+      }
+      drawScreen();
+    }
+
+    function drawStar(ctx, x, y, R, r) {
+      ctx.beginPath();
+      //i  => 五角星五个点
+      //x, y 圆心坐标值
+      // R 外圆半径
+      // r 内圆半径
+      for (var i = 0; i < 5; i++) {
+        //外圆点
+        ctx.lineTo(
+          Math.cos((18 + 72 * i) / 180 * Math.PI) * R + x,
+           -Math.sin((18 + 72 * i) / 180 * Math.PI) * R + y
+        );
+
+        // 内圆点
+        ctx.lineTo(
+          Math.cos((54 + i * 72) / 180 * Math.PI) * r + x,
+          -Math.sin((54 + i * 72) / 180 * Math.PI) * r + y
+        );
+      }
+      ctx.closePath();
+      ctx.stroke();
+    }
+  </script>
+</body>
+
+</html>

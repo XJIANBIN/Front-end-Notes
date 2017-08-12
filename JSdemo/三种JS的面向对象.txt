@@ -1,0 +1,159 @@
+http://www.jianshu.com/p/607daed38fa0
+
+
+第一种
+class Car {
+    constructor(name) {
+        this.name = name;
+        this.gear = 0;
+        this.speed = 0;
+    }
+
+    drive() {
+        clearInterval(this.driving);
+        this.gear++;
+        this.driving = setInterval(() => {
+            this.speed += this.gear * 10;
+            console.log(`老司机的${this.name}车速到了${this.speed}`);
+            if (this.speed >= 200) {
+                this.stop();
+            }
+        }, 100);
+    }
+
+    stop() {
+        console.log("翻车了！");
+        this.gear = 0;
+        clearInterval(this.driving);
+    }
+}
+
+
+子类
+class YunNanCar extends Car {
+    constructor(name, personName) {
+        super(name);
+        this.personName = personName;
+    }
+
+    drive() {
+        clearInterval(this.driving);
+        this.gear++;
+        this.driving = setInterval(() => {
+            this.speed += this.gear * 10;
+            console.log(`${this.personName}的${this.name}车速到了${this.speed}`);
+            if (this.speed >= 300) {
+                this.stop();
+            }
+        }, 100);
+    }
+
+}
+
+let kunmingCar = new YunNanCar("昆明车", "樛木");
+kunmingCar.drive();
+
+
+function YunNanCar(name, personName) {
+    //继承
+    Car.call(this, name);
+    this.personName = personName;
+}
+
+https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/create
+YunNanCar.prototype = Object.create(Car.prototype);
+// 高程上的，会有意想不到的bug
+// YunNanCar.prototype = new Car();
+// YunNanCar.prototype.constructor = Car;
+YunNanCar.prototype.drive = function () {
+    clearInterval(this.driving);
+    this.gear++;
+    this.driving = setInterval(function () {
+        //这里可以用self,但是不好
+        this.speed += this.gear * 10;
+        console.log(this.personName + this.name + "车速到了" + this.speed);
+        if (this.speed >= 300) {
+            this.stop();
+        }
+    }.bind(this), 100);
+}
+
+var kunmingCar = new YunNanCar("昆明车", "樛木");
+kunmingCar.drive();
+
+
+
+第二种
+
+function Car(name) {
+    this.name = name;
+    this.gear = 0;
+    this.speed = 0;
+}
+
+Car.prototype.drive = function () {
+    clearInterval(this.driving);
+    this.gear++;
+    this.driving = setInterval(function () {
+        //这里可以用self,但是不好
+        this.speed += this.gear * 10;
+        console.log("老司机的" + this.name + "车速到了" + this.speed);
+        if (this.speed >= 200) {
+            this.stop();
+        }
+    }.bind(this), 100);
+};
+Car.prototype.stop = function () {
+    console.log("翻车了！");
+    this.gear = 0;
+    clearInterval(this.driving);
+};
+
+
+第三种
+init:function(name){..}
+let Car = {
+    init(name) {
+        this.name = name;
+        this.gear = 0;
+        this.speed = 0;
+    },
+    drive() {
+        clearInterval(this.driving);
+        this.gear++;
+        this.driving = setInterval(() => {
+            this.speed += this.gear * 10;
+            console.log(`老司机的${this.name}车速到了${this.speed}`);
+            if (this.speed >= 200) {
+                this.stop();
+            }
+        }, 100);
+    },
+    stop() {
+        console.log("翻车了！");
+        this.gear = 0;
+        clearInterval(this.driving);
+    }
+}
+
+
+Shoe.build = function (name, personName) {
+    this.init(name);
+    this.personName = personName;
+}
+//独特的飙车方法
+Shoe.racing = function () {
+    clearInterval(this.driving);
+    this.gear++;
+    this.driving = setInterval(() => {
+        this.speed += this.gear * 10;
+        console.log(`${this.personName}的${this.name}滑板鞋速度到了${this.speed}`);
+        if (this.speed >= 300) {
+            this.stop();
+        }
+    }, 100);
+}
+
+let kunmingShoe = Object.create(Shoe);
+kunmingShoe.build("滑板鞋", "樛木");
+kunmingShoe.racing();

@@ -1,0 +1,319 @@
+<html><head></head>
+
+
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta charset="utf-8">
+	<title>搭建微信订阅号后台服务 - 开发者实验室 - 腾讯云</title>
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="icon" href="https://www.qcloud.com/favicon.ico" type="image/x-icon">
+	<style media="screen">
+		 /* 说明：为了方便用户可以直接下载查看，样式采用内嵌的方式书写 */
+		body {
+			margin: 0;
+			padding: 30px;
+			background-color: #fff;
+			font-size: 14px;
+			line-height: 1.5;
+			color: #444;
+		}
+		a {
+			color: #2277da;
+			text-decoration: none;
+			cursor: pointer;
+		}
+		a:hover {
+			text-decoration: underline;
+		}
+
+		/* 教程文档 start */
+		.lab-edi-doc {
+			margin: 0 auto;
+			max-width: 960px;
+			min-width: 320px;
+		}
+		.lab-edi-doc :first-child {
+			margin-top: 0;
+		}
+		.lab-edi-doc h1,
+		.lab-edi-doc h2,
+		.lab-edi-doc h3,
+		.lab-edi-doc h4 {
+			margin: 30px 0 15px;
+			font-weight: normal;
+			color: #000;
+		}
+		.lab-edi-doc h1 {
+			font-size: 24px;
+		}
+		.lab-edi-doc h2 {
+			font-size: 18px;
+		}
+		.lab-edi-doc h3 {
+			font-size: 16px;
+		}
+		.lab-edi-doc h4 {
+			font-size: 14px;
+			font-weight: bold;
+		}
+		.lab-edi-doc blockquote {
+			margin: 0 0 20px;
+			padding: 0 15px;
+			color: #888;
+			border-left: 4px solid #ddd;
+		}
+		.lab-edi-doc pre {
+			margin: 0 0 10px;
+			padding: 10px 15px;
+			overflow: auto;
+			background-color: #343638;
+			border-radius: 2px;
+			color: #fff;
+			max-height: 600px;
+			font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+		}
+		.lab-edi-doc code {
+			position: relative;
+			top: -1px;
+			display: inline-block;
+			margin: 0 3px;
+			padding: 0 3px;
+			color: #000;
+			vertical-align: middle;
+			background-color: #e3e4e5;
+			font-size: 14px;
+			line-height: 18px;
+		}
+		.lab-edi-doc pre code {
+			background: transparent;
+			color: #fff;
+		}
+		.lab-edi-doc p {
+			margin-bottom: 10px;
+		}
+		.lab-edi-doc ol,
+		.lab-edi-doc ul {
+			list-style: none;
+			margin: 0 0 15px;
+			padding: 0;
+		}
+		.lab-edi-doc ol {
+			counter-reset: num;
+		}
+		.lab-edi-doc ol > li {
+			margin-bottom: 3px;
+		}
+		.lab-edi-doc ol > li:before {
+			counter-increment: num;
+			content: counter(num)'. ';
+		}
+		.lab-edi-doc ul > li {
+			margin-bottom: 3px;
+		}
+		.lab-edi-doc ul > li:before {
+			content: '';
+			display: inline-block;
+			vertical-align: middle;
+			position: relative;
+			top: -1px;
+			margin-left: 3px;
+			margin-right: 5px;
+			width: 4px;
+			height: 4px;
+			border-radius: 50%;
+			background-color: #444;
+		}
+	</style>
+<body>
+<div class="lab-edi-doc"><h1 id="-">搭建微信订阅号后台服务</h1>
+<h2 id="-">准备域名</h2>
+<blockquote>
+<p>任务时间：20min ~ 40min</p>
+</blockquote>
+<p>微信公众平台需要配置服务器地址 URL 访问，在实验开始之前，我们要准备域名。</p>
+<h3 id="-">域名注册</h3>
+<p>如果您还没有域名，可以<a target="_blank" href="https://dnspod.qcloud.com/?fromSource=lab" title="null">在腾讯云上选购</a>，过程可以参考下面的视频。</p>
+<ul>
+<li><em>视频 - 在腾讯云上购买域名</em></li>
+</ul>
+<h3 id="-">域名解析</h3>
+<p>域名购买完成后, 需要将域名解析到实验云主机上，实验云主机的 IP 为：</p>
+<pre><code>&lt;您的 CVM IP 地址&gt;
+</code></pre><p>在腾讯云购买的域名，可以<em>到控制台添加解析记录</em>，过程可参考下面的视频：</p>
+<ul>
+<li><em>视频 - 如何在腾讯云上解析域名</em> </li>
+</ul>
+<p>域名设置解析后需要过一段时间才会生效，通过 <code>ping</code> 命令检查域名是否生效 <sup>[<a href="#stage-1-step-2-replace">?</a>]</sup>，如：</p>
+<pre><code>ping www.yourmpdomain.com
+</code></pre><p>如果 ping 命令返回的信息中含有你设置的解析的 IP 地址，说明解析成功。</p>
+<p><a id="stage-1-step-2-replace"></a></p>
+<blockquote>
+<p>注意替换下面命令中的 <code>www.yourmpdomain.com</code> 为您自己的注册的域名</p>
+</blockquote>
+<h2 id="-">申请微信个人订阅号</h2>
+<blockquote>
+<p>任务时间：5min ~ 10min</p>
+</blockquote>
+<p>在开始搭建我们的订阅号服务器之前，需要先拿到订阅号相关信息。</p>
+<h3 id="-">注册开发者账号</h3>
+<p>如果你还不是微信订阅号开发者，请先在微信公众平台注册：</p>
+<pre><code>https://mp.weixin.qq.com
+</code></pre><p>具体注册流程可参考如下视频：</p>
+<ul>
+<li><em>视频 - 注册开发者账号</em> </li>
+</ul>
+<p>若您已注册，请点击下一步。</p>
+<h3 id="-">获取微信订阅号公众平台认证字段信息</h3>
+<p>我们需要获取3个字段：AppID Token EncodingAESKey。</p>
+<p>登录微信公众平台，依次进入 <code>开发</code> - <code>基本配置</code> 可以拿到 AppID。</p>
+<p>在<code>基本配置</code> - <code>服务器配置</code> - <code>修改配置</code> 表单中：</p>
+<p>URL 填第一步申请的域名;</p>
+<p>Token 用户根据提示填写，用于后面校验服务端合法性;</p>
+<p>EncodingAESKey 点击<code>随机生成</code>按钮来生成。</p>
+<p>当点击表单<code>提交</code>按钮时，微信会通过 Token 来校验 URL 的合法性，这个我们在后面步骤实现，此界面暂时保留不关闭。</p>
+<p>AppID Token EncodingAESKey 这3个参数具体的获取步骤也可以参照下面的视频</p>
+<ul>
+<li><em>视频 - 获取微信订阅号信息</em> </li>
+</ul>
+<h2 id="-http-">搭建 HTTP 服务</h2>
+<blockquote>
+<p>任务时间：15min ~ 30min</p>
+</blockquote>
+<p>下面的步骤，将带大家在服务器上使用 Node 和 Express 搭建一个 HTTP 服务器</p>
+<h3 id="-nodejs-npm">安装 NodeJS 和 NPM</h3>
+<p>使用下面的命令安装 NodeJS 和 NPM</p>
+<pre><code>yum install nodejs npm -y
+</code></pre><p>安装完成后，使用下面的命令测试安装结果</p>
+<pre><code>node -v
+</code></pre><h3 id="-http-server-">编写 HTTP Server 源码</h3>
+<h4 id="-">创建工作目录</h4>
+<p>使用下面的命令在服务器创建一个工作目录：</p>
+<pre><code>mkdir -p /data/release/weapp
+</code></pre><p>进入此工作目录</p>
+<pre><code>cd /data/release/weapp
+</code></pre><h4 id="-package-json">创建 package.json</h4>
+<p>在刚才创建的工作目录<em>创建 package.json</em>，添加我们服务器包的名称和版本号，可参考下面的示例。</p>
+<h5 id="-data-release-weapp-package-json">示例代码：/data/release/weapp/package.json</h5>
+<pre><code class="lang-json">{
+    "name": "weapp",
+    "version": "1.0.0"
+}
+</code></pre>
+<p>完成后，使用 <code>Ctrl + S</code> 保存文件</p>
+<h4 id="-server-">添加 Server 源码</h4>
+<p>在工作目录<em>创建 app.js</em>，使用 Express.js 来监听 <code>5050</code> 端口<sup>[<a href="#stage-3-step-2-5050">?</a>]</sup>，可参考下面的示例代码(注：请将 <code>app.js</code> 文件中的<code>token</code>/<code>appid</code>/<code>encodingAESKey</code>等配置项替换为您的订阅号对应的取值)。</p>
+<h5 id="-data-release-weapp-app-js">示例代码：/data/release/weapp/app.js</h5>
+<pre><code class="lang-js">// 引用 express 来支持 HTTP Server 的实现
+const express = require('express');
+
+// 引用微信公共平台自动回复消息接口服务中间件
+var wechat = require('wechat');
+
+// 创建一个 express 实例
+const app = express();
+
+// 配置微信公众平台参数，在教程第二步中获取
+var config = {
+    token: 'your token', // 填第二步中获取的 `token`
+    appid: 'your appid', // 填第二步中获取的 `appid`
+    encodingAESKey: 'your encodingAESKey', // 填第二步中获取的 `encodingAESKey`
+    checkSignature: true // 可选，默认为true。由于微信公众平台接口调试工具在明文模式下不发送签名，所以如要使用该测试工具，请将其设置为false 
+};
+
+app.use(express.query());
+
+app.use('/', wechat(config, function (req, res, next) {
+    res.reply({
+        content: '你好，Hello World!',
+        type: 'text'
+    });
+}));
+
+// 监听端口，等待连接
+const port = 5050;
+app.listen(port);
+
+// 输出服务器启动日志
+console.log(`Server listening at http://127.0.0.1:${port}`);
+</code></pre>
+<p><a id="stage-3-step-2-5050"></a></p>
+<blockquote>
+<p>本实验会以 5050 端口的打开作为实验步骤完成的依据，为了后面的实验步骤顺利进行，请不要使用其它端口号</p>
+</blockquote>
+<h3 id="-http-">运行 HTTP 服务</h3>
+<h4 id="-pm2">安装 PM2</h4>
+<p>在开始之前，我们先来安装 <sup>[<a href="#stage-3-step-3-PM2">PM2</a>]</sup></p>
+<pre><code>npm install pm2 --global
+</code></pre><p>PM2 安装时间可能稍长，请耐心等候 <sup>[<a href="#stage-3-step-3-slow">?</a>]</sup></p>
+<h4 id="-express">安装 Express</h4>
+<p>我们的服务器源码里使用到了 Express 模块，下面的命令使用 NPM 来安装 Express</p>
+<pre><code>cd /data/release/weapp
+npm install express --save
+</code></pre><h4 id="-wechat">安装 Wechat</h4>
+<p>我们的服务器源码里使用到了 Wechat 模块，下面的命令使用 NPM 来安装 Wechat</p>
+<pre><code>cd /data/release/weapp
+npm install wechat --save
+</code></pre><h4 id="-">启动服务</h4>
+<p>安装完成后，使用 PM2 来启动 HTTP 服务</p>
+<pre><code>cd /data/release/weapp
+pm2 start app.js
+</code></pre><p>现在，您的 HTTP 服务已经在 <a target="_blank" href="http://&lt;您的 CVM IP 地址&gt;:5050" title="null">http://&lt;您的 CVM IP 地址&gt;:5050</a> 运行</p>
+<p>要查看服务输出的日志，可以使用下面的命令：</p>
+<pre><code>pm2 logs
+</code></pre><p>如果要重启服务，可以使用下面的命令：</p>
+<pre><code>pm2 restart app
+</code></pre><p><a id="stage-3-step-3-PM2"></a></p>
+<blockquote>
+<p>我们使用 PM2 来进行 Node 进程的运行、监控和管理</p>
+</blockquote>
+<p><a id="stage-3-step-3-slow"></a></p>
+<blockquote>
+<p>NPM 仓库在国内访问速度可能不太理想，如果实在太慢可以尝试使用 CNPM 的 Registry 进行安装：<code>npm install pm2 -g --registry=https://r.cnpmjs.org/</code></p>
+</blockquote>
+<h2 id="-nginx-">搭建 nginx 对外服务</h2>
+<blockquote>
+<p>任务时间：15min ~ 30min</p>
+</blockquote>
+<p>NodeJs只是侦听的机器上的 <code>5050</code> 端口，我们使用 <code>nginx</code> 侦听 <code>80</code> 端口提供对外域名服务</p>
+<h3 id="-nginx">安装 Nginx</h3>
+<p>在 CentOS 上，可直接使用 <code>yum</code> 来安装 Nginx</p>
+<pre><code>yum install nginx -y
+</code></pre><p>安装完成后，使用 <code>nginx</code> 命令启动 Nginx：</p>
+<pre><code>nginx
+</code></pre><p>此时，访问 <a target="_blank" href="http://&lt;您的域名" title="null">http://&lt;您的域名&gt;</a> 可以看到 Nginx 的测试页面 <sup>[<a href="#stage-4-step-1-help">?</a>]</sup></p>
+<p><a id="stage-4-step-1-help"></a></p>
+<blockquote>
+<p>如果无法访问，请重试用 <code>nginx -s reload</code> 命令重启 Nginx</p>
+</blockquote>
+<h3 id="-http-">配置 HTTP 反向代理</h3>
+<p>外网用户访问服务器的 Web 服务由 Nginx 提供，Nginx 需要配置反向代理才能使得 Web 服务转发到本地的 Node 服务。</p>
+<p>Nginx 配置目录在 <em>/etc/nginx/conf.d</em>，我们在该目录创建 <em>wechat.conf</em></p>
+<h5 id="-etc-nginx-conf-d-wechat-conf">示例代码：/etc/nginx/conf.d/wechat.conf</h5>
+<pre><code class="lang-nginx">server {
+        listen 80;
+        server_name www.example.com; # 改为第一步申请的域名
+
+        location / {
+            proxy_pass http://127.0.0.1:5050;
+        }
+    }
+</code></pre>
+<p>按 <code>Ctrl + S</code> 保存配置文件，让 Nginx 重新加载配置使其生效：</p>
+<pre><code>nginx -s reload
+</code></pre><p>在浏览器通过 http 的方式访问你解析的域名来测试 HTTP 是否成功启动</p>
+<h2 id="-server-">使用Server端回复微信消息</h2>
+<blockquote>
+<p>任务时间：1min ~ 5min</p>
+</blockquote>
+<h3 id="-">提交服务端配置</h3>
+<p>我们将第二步微信公众平台中保留的表单提交，同时将 <code>基本配置</code> - <code>服务器配置</code> 启用</p>
+<h3 id="-">关注、发送与消息回复</h3>
+<p>首先通过二维码关注微信订阅号</p>
+<p>在聊天界面向微信公众号发送一条消息</p>
+<p>最终我们会回到一条 <code>你好，Hello World!</code> 的回复</p>
+<h3 id="-">大功搞成</h3>
+<p>恭喜！您已经完成了搭建微信订阅号后台服务的实验内容！您可以留用或者<em>购买 Linux 版本的 CVM</em> 继续学习。</p>
+</div>
+</body></html>

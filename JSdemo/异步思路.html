@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>实现异步</title>
+</head>
+<script>
+
+// 三个异步接口
+// getTodayUser, 异步返回userId
+// getTodayMovie 异步返回movieId
+// bookMovie需要前两个返回的参数
+  function bookToday(callback) {
+    var params = [];
+
+    function check() {
+      var uid = params[0];
+      var mid = params[1];
+
+      if (typeof uid !== 'undefined' && typeof mid !== 'undefined') {
+        bookMovie();
+      }
+    }
+
+    getTodayUser(function(userId) {
+      params[0] = userId;
+      check();
+    });
+
+    getTodayMovie(function(movieId) {
+      params[1] = movieId;
+      check();
+    });
+  }
+
+  function bookMovie() {
+    console.log('完成预定');
+  }
+
+  function getTodayUser(cb) {
+    movieId = '1';
+    cb(movieId);// 成功回调调用
+  }
+
+  function getTodayMovie(cb) {
+    movieId = '2';
+    cb(movieId); // 成功回调调用
+  }
+  bookToday();
+</script>
+
+<body>
+
+</body>
+
+</html>

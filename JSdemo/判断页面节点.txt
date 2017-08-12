@@ -1,0 +1,67 @@
+function traverse(oNode){
+  var Result=[];
+  var oNode=oNode || window.body;
+  if(oNode.style){
+    var nWidth=Window.parseInt(oNode.style.width,10) || 0;
+	var nHeight=Window.parseInt(oNode.style.heigh,10) || 0;
+	if(nWidth>50 && nHeight >50){
+	  Result.push(oNode);
+	}
+  }
+  var childNode=oNode.childNodes;
+  if(childNode.length>0){
+   for(var i=0;i<childNode.length;i++){
+    var oTmp=childNode[i];
+	Result=Result.concat(traverse(oTmp));
+   }
+  }
+  return Result;
+}
+
+
+function traverse(oNode){
+	var Result=[];
+	var oNode= oNode || Window.body;
+	if(oNode.style){
+		var nWidth=Window.parseInt(oNode.style.width,10) || 0;
+		var nHeight=Window.parseInt(oNode.style.height,10) || 0;
+	    if(nWidth>50 &&nHeight >50){
+			Result.push(oNode);
+		}
+	}
+	var childNode=oNode.childNodes;
+	if(childNode.length>0){
+		for(var i=0;i,childNode.length;i++){
+		var oTmp=childNode[i];
+		Result=Result.concat(traverse(oTmp));
+		}
+	}
+	return Result;
+}
+
+
+
+//版本号比较
+function compare(ver1,ver2){
+	if(ver1 &&ver2){
+	var vs1=ver1.split(",");
+	var vs2=ver2.solit(",");
+	var minLength=Main.min(vs1.length,vs2.length);
+	position=0;
+	diff=0;
+	while(position<=minLength &&((diff=parseInt(vs1[position])-parseInt(vs2[position])))==0){
+		position++;
+	}
+	diff=(diff!=0)?diff:(vs1.length,vs2.length);
+	
+	return diff>0;
+	}esle{
+	  alert("版本号不能为空");  
+      return false;  
+	}
+}
+
+
+
+
+

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Promise基本介绍1</title>
+    <script>
+    // (1)三种状态：Pending（进行中）、Resolved（已完成，又称 Fulfilled）和Rejected（已失败）。
+	
+	//(2) 一旦状态改变，就不会再变，你再对Promise对象添加回调函数，也会立即得到这个结果。这与事件（Event）完全不同，事件的特点是，如果你错过了它，再去监听，是得不到结果的。
+	
+	//(3)注意如果不设置回调函数，Promise内部抛出的错误，不会反应到外部。也就是外面try{}castch(){} 永远无法捕获到错误
+	
+	//这里又涉及两种异常的抛出，及两种异常的捕获
+	//异常 1：在Promise里面抛出的异常  2 在回调函数中抛出的异常
+	//两种异常的捕获方式 1 即.then里面的Reject状态的回调函数  2 .catch()的异常捕获
+	
+	//第一种异常的捕获遵循就近原则，即如果Reject状态的回调函数有定义就被该函数捕获，未定义就由catch捕获
+	//第二种异常只能由.catch()捕获
+	//一般来说，不要在then方法里面定义Reject状态的回调函数（即then的第二个参数），总是使用catch方法。
+
+
+	//Promise构造函数接收一个函数作为参数，该函数的两个参数该函数的两个参数分别是resolve和reject。它们是两个函数，由JavaScript引擎提供，不用自己部署。
+	 var promise=new (function(resolve,reject){
+		if(/*操作成功*/){
+			resolve(value); 
+			//resolve函数和reject函数时带有参数，那么它们的参数会被传递给回调函数。
+			//reject函数的参数通常是Error对象的实例，表示抛出的错误；
+			//resolve函数的参数除了正常的值以外，还可能是另一个Promise实例，表示异步操作的结果有可能是一个值，也有可能是另一个异步操作
+		}else{
+			reject(error);
+		}
+	 });
+	 
+	 promise.then(function(value){
+	 //success  Resolved状态回调函数
+	 console.log("调用成功");
+	 },function(error){
+	 //failure  Reject状态的回调函数。
+	 console.log("调用失败");
+	 });
+	 
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>

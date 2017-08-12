@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>save() and restore()</title>
+  <style>
+    #myCanvas{
+      border: 1px solid #ea0773;
+    }
+  </style>
+</head>
+<body>
+<canvas id="myCanvas" width="300" height="300">
+  您的浏览器不支持H5 canvas,请更换浏览器体验!
+</canvas>
+<script>
+  //大漠教程  http://mp.weixin.qq.com/s/SEkwLkXq6QaEYQhLtaLznA
+
+ //js创建canvas
+ // (function(){
+ //   var canvas = document.createElement('canvas');
+ //   document.body.appendChild('canvas');
+ //   canvas.id = 'my_canvas';
+ //   canvas.width = 400;
+ //   canvas.height = 400;
+ // })();
+
+ // 检测浏览器支持情况
+window.addEventListener('load', eventWindowLoaded, false);
+
+function eventWindowLoaded(){
+  canvasApp();
+}
+
+ function canvasSupport(e) {
+   return !!e.getContext;
+ }
+
+
+//save()方法会将Canvas的状态推到Canvas绘图的堆栈中，然后通过restore()方法从Canvas绘图的堆栈中取出save()保存的状态。
+function canvasApp() {
+  var myCanvas = document.getElementById('myCanvas');
+  if(!canvasSupport(myCanvas)) {
+    return ;
+  }
+  var ctx = myCanvas.getContext('2d');
+  function drawScreen(){
+    // ctx.fillStyle = '#00334e';
+    // ctx.save();
+    // ctx.translate(40, 40); // 重新映射画布上的 (0,0) 位置
+    //
+    // ctx.beginPath();
+    // ctx.arc(0, 0, 50, 30 / 180 * Math.PI, 111 / 180 * Math.PI);
+    //
+    // ctx.save(); // 先保存状态为一开始状态，不然旋转后的坐标轴不一样，角度也就不一样，这样角度就不好算了，
+    // ctx.rotate(30 / 180 * Math.PI); // 旋转当前绘图 即整个坐标轴旋转
+    // ctx.moveTo(50, 0); //画第一条连线
+    // ctx.lineTo(0, 0);
+    //
+    // ctx.restore(); // 返回画完圆弧是坐标轴的位置
+    // ctx.rotate(111 / 180 * Math.PI);
+    // ctx.lineTo(50, 0);
+    // ctx.closePath();
+    // ctx.restore();
+    // ctx.stroke();
+
+    var deg = Math.PI / 180;
+
+    var obj = {
+      x: 200,
+      y: 200,
+      r: 50,
+      sDeg: [30, 111, 190, 233, 280, 345],
+      eDeg: [111, 190, 233, 280, 345, 30],
+      style: ['#f00', '#0f0', '#00f', '#789', 'abcdef']
+    }
+    for(var i = 0; i < obj.sDeg.length; i++){
+      drawSector(ctx, obj.x, obj.y, obj.r, obj.sDeg[i] * deg, obj.eDeg[i] * deg);
+      ctx.fill();
+      ctx.fillStyle = obj.style[i];
+    }
+  }
+  drawScreen();
+  function drawSector(ctx, x, y, r, sDeg, eDeg){
+    //初始保存
+    ctx.save();
+    //位移到目标点
+    ctx.translate(x, y); //重新映射画布（0,0）位置。
+    ctx.beginPath();
+    //画出圆弧
+    ctx.arc(0, 0, r, sDeg, eDeg);
+    // 再次保存以备旋转
+    ctx.save();
+    //旋转至起始角度
+    ctx.rotate(eDeg);
+    // 移动到终点，准备连接圆心
+    ctx.moveTo(r, 0);
+    // 连接到圆心
+    ctx.lineTo(0, 0);
+    //还原
+    ctx.restore();
+    //旋转至起点角度
+    ctx.rotate(sDeg);
+    //从圆心连接至起点
+    ctx.lineTo(r, 0);
+    ctx.closePath();
+    ctx.restore();
+  }
+}
+
+</script>
+</body>
+</html>

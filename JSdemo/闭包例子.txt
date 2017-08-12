@@ -1,0 +1,22 @@
+　　var name = "The Window";   
+　　var object = {   
+　　　　name : "My Object",   
+　　　　getNameFunc : function(){   
+　　　　　　return function(){   
+　　　　　　　　return this.name;   
+　　　　　};   
+　　　　}   
+};   
+alert(object.getNameFunc()());  //The Window
+
+javascript是动态（或者动态类型）语言，this关键字在执行的时候才能确定是谁。所以this永远指向调用者，即对‘调用对象‘者的引用。第一部分通过代码：object.getNameFunc()调用返回一个函数。这是个返回的函数，它不在是object的属性或者方法，此时调用者是window。因此输出是 The Window
+
+
+
+var a=6;
+setTimeout(
+function(){alert(a);var a=66;},1000);
+a=666;
+alert(a);
+
+异步处理，声明提前

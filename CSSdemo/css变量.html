@@ -1,0 +1,181 @@
+<!DOCTYPE html
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>css变量学习</title>
+  <script>
+    //css 原生变量的定义
+    //--variableName: variableValue;variableName表示自定义变量名，variableValue表示属性值。
+    //变量名称（variable-name）的规范：
+    // *  以“--”双横杠开头，后面可以是数字[0-9]、字母[a-zA-Z]、下划线_和短横线-这些组合，甚至是中文也行，但不能包含$、[、^、(、%等字符。
+    // *  大小写是敏感的
+    // *  定义只能在声明块{}里面
+
+    //当然，并不是只能在:root根元素（这里定义的变量是全局的）里定义，你可以在任意的HTML元素里（相当于局部变量，在其他地方不能用）定义：
+    //当你定义多个同名的变量时，变量的覆盖规则会是由CSS选择器的权重来决定的
+
+    // 变量的使用
+    // cssPropertyName: var(--variableName [, declarationValue]);
+    //var()会返回--variableName的值，declarationValue表示默认值，也就是当--variableName没有定义的时候，取declarationValue的值。
+
+    //使用限制
+    //* css自定义变量不能用作属性名称: 比如 var(--color):red
+    //* 不能用作背景地址：url:var(--url);
+    //由于var()背后会默认加一个空格，所以后面加单位无效；
+
+    // 浏览器检测是否支持
+    // * 使用@supports
+    // @supports ( (--size: 0) ){支持}
+    // @supports ( not (--size: 0)){不支持}
+    //if(window.CSS && window.CSS.supports && window.CSS.supports('--size', 0)) {
+    //   /* 支持 */
+    // }else{
+    //  /* 不支持 */
+    // }
+
+
+    // 使用js操作原生属性变量
+    // 1使用window.getComputedStyle()来读写自定义变量
+    //   var var rootStyles = getComputedStyle(document.documentElement);
+    //   var value = rootStyles.getPropertyValue('--variableName');
+    // 获取某个元素中定义的属性变量 value = element.style.getPropertyValue('--variableName');
+    // 修改属性值
+    // element.style.setProperty('--variableName', value);
+    // document.documentElement.style.setProperty('--variableName', value);
+
+
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Roboto');
+      /*伪元素表单控件默认样式重置与自定义大全 http://www.zhangxinxu.com/wordpress/2013/06/%E4%BC%AA%E5%85%83%E7%B4%A0-%E8%A1%A8%E5%8D%95%E6%A0%B7%E5%BC%8F-pseudo-elements-style-form-controls/*/
+      /*css变量http://ghmagical.com/article/page/id/MOhfNo9O6bLn*/
+    body {
+      text-align: center;
+      background: #fcfcfc;
+      color: #363b3f;
+      font-family: "Roboto" sans-serif;
+      font-weight: 100;
+      font-size: 1.3rem;
+    }
+
+    .controls {
+      margin-bottom: 50px;
+    }
+
+     :root {
+      --spacing: 10px;
+      --base: #95c6c6;
+      --blur: 0px;
+    }
+
+    img {
+      padding: var(--spacing);
+      background: var(--base);
+      filter: blur(var(--blur));
+    }
+
+    .h1{
+      color: var(--base);
+    }
+
+    input[type=range]{
+      -webkit-appearance: none;/* 更改元素形状 transparent是全透明黑色(black)的速记法*/
+      border: 1px solid transparent;/*更改进度条的外边框*/
+      width: 300px;
+    }
+    input[type=range]::-webkit-slider-runnable-track{
+      width: 300px;
+      height: 3px;
+      background: #dce6e9;
+      border: none;
+    }
+    input[type=range]::-webkit-slider-thumb{
+      -webkit-appearance: none; /*必须更改元素形状先*/
+      border: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      margin-top: -4px;
+      background: var(--base);
+    }
+    input[type=range]:focus{
+      outline: none;
+    }
+    input[type=range]:focus::-webkit-slider-runnable-track{
+      background: #ccc;
+    }
+    input[type=range]::-moz-range-track{
+      width: 300px;
+      height: 3px;
+      background: #dce6e9;
+      border: none;
+    }
+    input[type=range]::-moz-range-thumb{
+      border: none;
+      height: 16px;
+      width: 16px;
+      border-radius: 50%;
+      background: var(--base);
+    }
+    input[type=range]:-moz-focusring{
+      outline: 10px solid #dce6e9;
+      outline-offset: -1px;
+    }
+    input[type=color]{
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      border-radius: 0;
+      background-color: #fff;
+      border: 1px solid #dce6e9;
+      height: 2.4rem;
+      padding: 0.5rem;
+      width: 100px;
+      margin: 4px;
+      box-shadow: none;
+    }
+    /*input[type=color]:focus{
+      outline: none;
+    }*/
+  </style>
+</head>
+
+<body>
+  <h3>Update CSS Variables with <span class="hl">JS</span></h3>
+  <div class="controls">
+    <label for="spacing">spacing:</label>
+    <br>
+    <input id="spacing" name="spacing" type="range" min="10" max="200" value="10" data-sizing="px">
+    <br>
+    <label for="blur">blur:</label>
+    <br>
+    <input type="range" id="blur" name="blur" min="0" max="25" value="0" data-sizing="px">
+    <br>
+    <label for="base">base:</label>
+    <br>
+    <input type="color" id="base" name="base" value="#95c6c6">
+  </div>
+  <img src="https://source.unsplash.com/4Ia348kvX7A/800x500">
+  <script>
+    const inputs = document.quertSelectorAll('.controls input');
+    function  handleUpdate(){
+      var suffix = this.dataset.sizing || '';
+      document.documentElement.style.setProperty(`--${this.name}`,this.value + suffix);
+
+      // console.log(suffix);
+      // console.log(`--${this.name}`)
+      // console.log(document.documentElement.style.getProperty(`--${this.name}`));
+      console.log(this.value);
+      var rootStyles = getComputedStyle(document.documentElement); /*window.getComputedStyle来获取自定义变量*/
+      console.log(rootStyles);
+      var value = rootStyles.getPropertyValue(`--${this.name}`);
+      console.log(value)
+    }
+    inputs.forEach(input=>{
+      input.addEventListener('change',handleUpdate);
+      input.addEventListener('mousemove',handleUpdate);
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>订阅者模式</title>
+  <style>
+    html,
+    body {
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      background-image: radial-gradient(ellipse farthest-corner at 50% 0, #DBF5F1 0%, #9BE4D8 100%);
+      background-color: #e9fbf8
+    }
+
+    #container {
+      width: 980px;
+      margin: 20px auto;
+      background: #fcfcfc;
+      min-height: 700px;
+      border-radius: 20px;
+      box-shadow: 0 0 30px 0 rgba(34, 195, 170, 0.5);
+      transform: translate3d(0, 0, 0);
+    }
+
+    #header {
+      width: 100%;
+      height: 44px;
+      background: white;
+      padding-top: 16px;
+      text-align: center;
+      border-radius: 20px;
+      font-size: 24px;
+      color: #888;
+      border-bottom: 3px solid #86dacc;
+    }
+    #con-body{
+      min-height: 500px;
+      margin: 10px 20px;
+      border-radius: 15px;
+      padding: 15px;
+      line-height: 28px;
+      color: #888;
+      background: linear-gradient(rgba(34,195,170,0.1) 0, transparent);
+    }
+    #p_detail{
+      background: #fcfcfc;
+      padding: 5px;
+      box-shadow: 5px 5px 15px 0 rgba(102,102,102,0.1);
+      border-radius: 0 20px 20px 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <div id="header">订阅者模式</div>
+    <div id="con-body">
+      <p id="p_detail">订阅者模式涉及三个对象：发布者，主题对象,订阅者,三个对象之间是一对多的关系，每当主题对象状态发生改变时,其相关依赖对象都会得到通知，并被自动更新。</p>
+
+    <div>function Dep() {//主题对象</div>
+    <div>&nbsp&nbsp&nbspthis.subs = []; //订阅者列表</div>
+    <div>}</div>
+    <div>Dep.prototype.notify = function() { //主题对象通知订阅者</div>
+    <div>&nbsp&nbsp&nbsp  this.subs.forEach(function(sub){ //遍历所有的订阅者，执行订阅者提供的更新方法</div>
+    <div>&nbsp&nbsp&nbsp&nbspsub.update();</div>
+    <div>&nbsp&nbsp&nbsp  });</div>
+    <div>}</div>
+    <div>function&nbspSub(x)&nbsp{ //订阅者</div>
+    <div>&nbsp&nbsp&nbspthis.x = x;</div>
+    <div>}</div>
+    <div>Sub.prototype.update = function() { //订阅者更新</div>
+    <div>&nbsp&nbsp&nbspthis.x = this.x + 1;</div>
+    <div>&nbsp&nbsp&nbspconsole.log(this.x);</div>
+    <div>}</div>
+    <div>var pub = { //发布者</div>
+    <div>&nbsp&nbsp&nbsppublish: function(dep) {</div>
+    <div>&nbsp&nbsp&nbsp&nbsp&nbspdep.notify();</div>
+    <div>&nbsp&nbsp&nbsp}</div>
+    <div>};</div>
+    <div>var dep = new Dep(); //主题对象实例</div>
+    <div>Array.prototype.push.call(dep.subs, new Sub(1), new Sub(2), new Sub(4)); //新增 3 个订阅者</div>
+    <div>pub.publish(dep); //发布者发布更新</div>
+    </div>
+  </div>
+  <script>
+     function Sub(x){ //订阅者
+       this.x = x;
+     }
+     Sub.prototype.update =function() {
+       this.x = this.x + 1;
+     }
+
+     function Dep(){  //主题列表
+       this.subs = []; //订阅者列表
+     }
+
+     Dep.prototype.notify = function(){
+       this.subs.forEach(function(sub){
+          sub.update();
+       });
+     }
+
+     var pub = {  //发布者
+       public : function(dep){
+         dep.notify();
+       }
+     }
+
+     var dep = new Dep(); //主题者实例
+     Array.prototype.push.call(dep.subs,new Sub(1),new Sub(2), new Sub(3));
+     pub.public(dep);//发布更新
+
+//订阅者实现更新
+//主体对象通知订阅者
+// 发布者发布更新
+
+  </script>
+</body>
+
+</html>

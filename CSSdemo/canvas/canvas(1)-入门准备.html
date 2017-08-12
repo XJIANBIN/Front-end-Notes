@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Canvas</title>
+  <style>
+    #myCanvas{
+      border: 1px solid #ea0773;
+    }
+  </style>
+</head>
+<body>
+<canvas id="myCanvas" width="300" height="300">
+  您的浏览器不支持H5 canvas,请更换浏览器体验!
+</canvas>
+<script>
+  //大漠教程  http://mp.weixin.qq.com/s/SEkwLkXq6QaEYQhLtaLznA
+
+ //js创建canvas
+ // (function(){
+ //   var canvas = document.createElement('canvas');
+ //   document.body.appendChild('canvas');
+ //   canvas.id = 'my_canvas';
+ //   canvas.width = 400;
+ //   canvas.height = 400;
+ // })();
+
+ // 检测浏览器支持情况
+window.addEventListener('load', eventWindowLoaded, false);
+
+function eventWindowLoaded(){
+  canvasApp();
+}
+
+ function canvasSupport(e) {
+   return !!e.getContext;
+ }
+
+function canvasApp() {
+  var myCanvas = document.getElementById('myCanvas');
+  if(!canvasSupport(myCanvas)) {
+    return ;
+  }
+  var ctx = myCanvas.getContext('2d');
+  function drawScreen(){
+    ctx.fillStyle = '#00334e';
+    ctx.fillRect(10,10,200,200);
+  }
+  drawScreen();
+}
+
+</script>
+</body>
+</html>

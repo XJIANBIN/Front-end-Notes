@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>div在同一行</title>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+    }
+
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    /*第一种方案：float*/
+
+    .a {
+      width: 30%;
+      height: 30%;
+
+      float: left;
+    }
+    /*第二种方案：display:table table-row*/
+
+    #B {
+      display: table;
+      overflow: hidden;
+      width: 100%
+    }
+
+    .b {
+
+      display: table-cell;
+      width: 30%;
+      margin-bottom: -100px;
+      padding: 1.6%;
+      /*word-wrap 是用来决定允不允许单词内断句的，如果不允许的话长单词就会溢出。最重要的一点是它还是会首先尝试挪到下一行，
+      看看下一行的宽度够不够，不够的话就进行单词内的断句。
+      而word-break:break-all则更变态，因为它断句的方式非常粗暴，它不会尝试把长单词挪到下一行，而是直接进行单词内的断句。
+      这也可以解释为什么说它的作用是决定用什么方式来断句的，那就是——用了word-break:break-all，就等于使用粗暴方式来断句了。
+      总之一句话，如果您想更节省空间，那就用word-break:break-all就对了！
+      word-wrap: break-word;*/
+      word-break: break-all;
+    }
+
+    .a1,
+    .b1 {
+      background: red;
+    }
+
+    .a2,
+    .b2 {
+      background: blue;
+    }
+
+    .a3,
+    .b3 {
+      background: yellow;
+    }
+   /*第三种方案：display:inline; text-align:center; 第四种:display:inline-block 区别inline-block 不能设置宽高 */
+    .page {
+      display: inline-block;
+      border: 1px solid rgb(0, 0, 0);
+      width: 120px;
+      min-height: 100px;
+      background: #ccc;
+      vertical-align: top;
+      font-size: 16px;
+    }
+
+    .pageHolder {
+      font-size: 0;
+    }
+
+    /*第五种；flex布局*/
+    .block_container{
+      display: flex;
+      justify-content: center;
+    }
+    .block{
+      width: 200px;
+      height: 200px;
+      border: 1px solid red;
+    }
+
+    /*第六种 绝对定位*/
+   #demo{
+     position: relative;
+   }
+  .demo1{
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .demo2{
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  </style>
+</head>
+
+<body>
+  <div class="a a1"></div>
+  <div class="a a2"></div>
+  <div class="a a3"></div>
+
+
+  <div id='B'>
+    <div class="b b1">asasasasdfasdfasdfasdfasdfasdfdfasasdfasdfasdfasdfasdfasdfdfasasdfasdfasdfasdfasdfasdfdfdfasdfasdfasdfasdfasdfdf</div>
+    <div class="b b2">asasasasdfasdfasdfasdfasdfasdfdfasasdfasdfasdfasdfasdfasdfdfasasdfasdfasdfasdfasdfasdfdfdfasdfasdfasdfasdfasdfdf</div>
+    <div class="b b3">asasasasdfasdfasdfasdfasdfasdfdfasasdfasdfasdfasdfasdfasdfdfasasdfasdfasdfasdfasdfasdfdfdfasdfasdfasdfasdfasdfdf</div>
+  </div>
+
+  <div class='pageHolder'>
+    <div class='page'>我是大傻逼阿斯多夫我是大傻逼阿斯多夫</div>
+    <div class='page'>2</div>
+    <div class='page'>3</div>
+  </div>
+
+
+  <div class='block_container'>
+    <div class='bloc1 block'>我是大傻逼阿斯多夫我是大傻逼阿斯多夫</div>
+    <div class='bloc2 block'>2</div>
+    <div class='bloc3 block'>3</div>
+  </div>
+
+  <div id="demo">
+    <div class="demo1 block"></div>
+    <div class="demo2 block"></div>
+  </div>
+</body>
+
+</html>

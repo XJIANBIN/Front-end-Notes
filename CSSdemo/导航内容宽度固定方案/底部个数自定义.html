@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-status-bar-style" content="black">
+    <title>兼容IE9+</title>
+    <style>
+    body {
+        padding: 0;
+        margin: 0;
+    }
+    
+    .navbar {
+        text-align: center;
+    }
+    
+    .navbar ul {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        display: inline-block;
+        height: 40px;
+    }
+    
+    .navbar li {
+    	height: 100%;
+        background: #ff3bb1;
+        list-style: none;
+        float: left;
+    }
+    
+    .navbar li a {
+        text-decoration: none;
+        line-height: 40px;
+    }
+    /*.navbar li + li {
+        margin-left: 20px;
+    }*/
+    
+    li:nth-last-child(2),
+    li:nth-last-child(2) ~ li {
+        width: 50%;
+    }
+    
+    li:nth-last-child(3),
+    li:nth-last-child(3) ~ li {
+        width: 33.33%;
+    }
+    
+    li:nth-last-child(4),
+    li:nth-last-child(4) ~ li {
+        width: 25%;
+    }
+    
+    li:nth-last-child(5),
+    li:nth-last-child(5) ~ li {
+        width: 20%;
+    }
+    
+    li:nth-last-child(6),
+    li:nth-last-child(6) ~ li {
+        width: 16.66%;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/">Home</a></li>
+        </ul>
+    </div>
+</body>
+
+</html>

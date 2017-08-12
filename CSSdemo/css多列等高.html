@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>css多列等高如何实现</title>
+  <style>
+    #parent {
+      overflow: hidden;
+    }
+
+    #son1 {
+      padding-bottom: 2000px;
+      margin-bottom: -2000px;
+      background: #0234ac;
+      width: 100px;
+      float: left;
+    }
+
+    #son2 {
+      height: 600px;
+      background: #232456;
+      margin: 0 200px 0 100px;
+    }
+
+    #son3 {
+      width: 200px;
+      margin-bottom: -2000px;
+      padding-bottom: 2000px;
+      background: #aa323b;
+      float: right;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="parent">
+    <div id="son1"></div>
+    <div id="son3"></div>
+    <div id="son2"></div>
+  </div>
+</body>
+
+</html>

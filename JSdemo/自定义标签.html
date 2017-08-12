@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>自定义标签</title>
+  <style>
+    .xujian{
+      display: block;
+      width: 100px;
+      height: 100px;
+      background: red;
+    }
+  </style>
+</head>
+<body>
+  <script>
+  //参考资料
+  // 大漠自定义标签 http://www.w3cplus.com/web-components/create-custom-html-elements-2.html
+  // shadow dom  https://www.toobug.net/article/what_is_shadow_dom.html
+  //  图灵 shadow dom http://www.ituring.com.cn/article/179915
+  // 什么是shadow dom ?
+  //  Shadow DOM 是一个 HTML 的新规范，其允许开发者封装自己的 HTML 标签、CSS 样式和 JavaScript 代码。例如<video>标签
+  // 具有播放/暂停按钮、进度条、视频时间显示、音量控制以及播放时的一个全屏切换按钮。这些组件都是封装在shadow dom里面的。并且你的css代码和js代码都
+  //不能影响到这部分
+  //
+  //shadow DOM和常规的DOM很类似，不同之处在于shadow DOM不是主文档子树的一员，shadow DOM中的结点属于文档片段，基本上等同于另一棵结点树，
+  //不能像普通结点那样添加脚本和样式。这给了作者们一种方法来封装和包裹样式及脚本，当创建模块化组件时。
+  // 开发者能通过 shadow DOM 在文档流中创建一些完全独立于其他元素的子 DOM 树（sub-DOM trees）， 由于这个特性，使得我们可以封装一个具有独立功能的组件，
+  //并且可以保证不会在不无意中干扰到其它 DOM 元素。shadow DOM 和标准的 DOM 一样，可以设置它的样式，也可以用 JavaScript 操作它的行为。
+  //主文档流和基于 shadow DOM 创建的独立组件之间的互不干扰，所以组件的复用也就变得异常简单方便。著作权归作者所有。
+
+  //用法
+  // <template id="appTmpl">
+  //  <style>
+  //   /* ... 将 CSS 移动到模板内 ... */
+  //  </style>
+  //  ... 原来的模板内容 ...
+  // </template>
+  //  <div class="app"></div>
+  //  var tmpl = document.querySelector('#appTmpl');
+  //  var host = document.querySelector('.app');
+  //  var root = host.createShadowRoot();
+  //  root.appendChild(document.importNode(tmpl.content, true));
+
+
+
+  //注意：
+  // 1 自定义标签类型类似于行内元素，即设置高度宽度无效，如需设置，像其他行内元素设置display即可
+  // 2 伪自定义元素（就像是下面提到的<asd>,没有注册）和真正的自定义元素之间的差别在于有没有使用DOM暴露的接口。
+  //   没有注册的自定义元素，使用的是HTMLUnknownElement接口，而经过注册的自定义元素使用的则是HTMLElement接口。
+  //   二者有什么区别？利用HTMLElement接口，我们可以添加我们自己的方法和属性，从而在本质上创建一个元素的API。每一个元素都有它自己的API。
+
+ // 创建自定义标签
+     var xujianbin = document.registerElement('x-jianbin');
+     document.body.appendChild(new xujianbin());
+
+// 给自定义元素创建JavaScript API
+     //创建原型
+     var xuPrototype = Object.create(HTMLElement.prototype);
+     xuPrototype.hello = function () {
+       console.log('xuPrototype');
+     }
+     Object.defineProperty(xuPrototype,'badges',{
+       value: 20,
+       writable: true
+     });
+    // 注册实例
+     var xujianbin_2 = document.registerElement('xjianbin-2',{
+       prototype: xuPrototype
+     });
+     var xu = new xujianbin_2();
+     document.body.appendChild(xu);
+     xu.hello();
+  </script>
+
+  <asd class="xujian"></asd>
+  <x-jianbin class="xujian"></x-jianbin>
+  <xjianbin-2 class="xujian" onclick="hello()"></xjianbin-2>
+  <video id="text" autoplay >
+
+  </video>
+</body>
+</html>

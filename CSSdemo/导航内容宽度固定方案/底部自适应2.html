@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-status-bar-style" content="black">
+    <title>支持IE8+</title>
+    <style>
+    body {
+        padding: 0;
+        margin: 0;
+    }
+    ol {
+    	padding: 0;
+        width: 100%;
+        /*width: 800px;*/
+        display: table;
+        table-layout: fixed;  /*确保相等宽度*/
+        /* the magic dust that ensure equal width */
+        background: #fcc;
+    }
+    
+    ol > li {
+        display: table-cell;
+        border: 1px dashed red;
+        text-align: center;
+    }
+    </style>
+</head>
+
+<body>
+    <ol>
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+        <li>Item 4</li>
+    </ol>
+</body>
+
+</html>

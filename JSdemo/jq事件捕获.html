@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+</head>
+<body>
+	<label for="com" id="mylabel">
+		<input id="com" type="radio">
+		完成
+	</label>
+
+<ul id="my_ul">
+	<li class="my_li">1</li>
+	<li class="my_li">2</li>
+	<li class="my_li">3</li>
+	<li class="my_li">4</li>
+	<li class="my_li">5</li>
+</ul>
+
+</body>
+<script>
+	$("#mylabel").on("click",function(event){
+		if (event.target === this) {
+			console.log(1); //没办法阻止事件捕获，只能判断是否是绑定元素触发的事件
+		}
+	});
+	$("#my_ul").on("click",function(event){    //事件委托的例子
+		console.log(event.target.innerText);
+	});
+	//顺便谈一谈 jq的四种绑定事件方法 .bind(),.live(),.delegate(),.on() 
+	//.on()性能最好，因为 bind和 delegate都是调用on()
+	//而.live()采用委托的方式，绑定监听事件到document上，通过事件冒泡来触发
+</script>
+</html>

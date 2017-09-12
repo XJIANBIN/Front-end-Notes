@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>iframe自适应</title>
+  <script src="http://source.xujianbin.pw/jquery-1.9.1.min.js"></script>
+  <script>
+    // 知识总结
+    // 一, body是没有getElementById等方法的
+    // -----------------------------------------------------------------------------------------------------------------------------
+    // 二，js 不能跨域获取iframe 的元素
+
+    // 获取iframe元素方法
+    // console.log(document.querySelectorAll('#myFrame')[0].contentWindow.document.getElementById('id'));
+    // console.log(document.getElementById("myFrame").contentWindow.document.getElementById())
+// -----------------------------------------------------------------------------------------------------------------------------s
+    // 三 iframe高度响应式 (在父页面操作父页面)
+    //   *  $("#myFrame").height($("#myFrame").context.body.scrollHeight); 此方法错误，拿到的是父页面的高度
+    //   *  onload="this.height=this.contentWindow.document.body.scrollHeight"
+
+    // function load() {
+      // * 1 $("#myFrame").height($("#myFrame").contents().find("body").height());
+      // * 2 document.getElementById("myFrame").style.height = window.frames[0].document.body.scrollHeight + "px";
+      // * 3 document.getElementsByTagName('myFrame')[0].setAttribute('height', window.frames[0].document.body.scrollHeight + "px");
+      // * 4 document.all("myFrame").style.height = window.frames[0].document.body.scrollHeight + "px";
+
+      //document.frames["myFrame"].document.body.scrollHeight;  只有 IE Opera 支持。 google支持window.frames["myFrame"]
+      // IE google 都支持document.getElementById("myFrame").contentDocument.body.scrollHeight;获取的大小不一样
+
+      // * 5 var ifm = document.getElementById("myFrame");
+      // var subWeb = document.frames ? document.frames["myFrame"].document : ifm.contentDocument;
+      // if (ifm != null && subWeb != null) {
+      //   ifm.height = subWeb.body.scrollHeight;
+      // }
+    // }
+// -----------------------------------------------------------------------------------------------------------------------------
+    //四 iframe高度响应式（子页面操作代码）
+     // 第一种方案
+    //   $(window.parent.document).find("#myFrame").load(function(){
+    // var main = $(window.parent.document).find("#myFrame");
+    // var thisheight = $(document).height() + 30;
+    // main.height(thisheight);
+    // });
+
+    // 第二种方案：
+    //$(top.document).find("iframe[name=myFrame]").height($(document).height());
+// -----------------------------------------------------------------------------------------------------------------------------
+   // 五 跨域iframe 响应式实现方式 (需能控制要加载的iframe)
+   // 第一种方案
+   // 假设域名分别为 http://source.xujianbin.pw 和  http://awesome.xujianbin.pw
+   // source.xujianbin.pw 包含asdfas.html  agent.html      awesome.xujianbin.pw包含 c.html
+   //  a.html 中iframe加载c.html，  c.html中iframe加载agent，然后通过agent.html跟a同域来修改 a.html中iframe(即c.html)宽高；
+   // 通过agent.html作为中介来传递宽高（把数据隐藏在url中）
+
+   //a.html 代码  <iframe src="http://awesome.xujianbin.pw/c.html" frameborder="0" id="myFrame" ></iframe>
+
+   //c.html 代码    <div style="width:600px;height:2000px;background:red;overflow:hidden;"></div>
+  // <iframe id="c_iframe" height="0" width="0" src="http://source.xujianbin.pw/agent.html" style="display:none"></iframe>
+  // <script type="text/javascript">
+  //   (function autoHeight() {
+  //     var b_width = Math.max(document.body.scrollWidth, document.body.clientWidth);
+  //     var b_height = Math.max(document.body.scrollHeight, document.body.clientHeight);
+  //     var c_iframe = document.getElementById("c_iframe");
+  //     c_iframe.src = c_iframe.src + "#" + b_width + "|" + b_height; // 这里通过hash传递b.htm的宽高
+  //   })();
+  // <script> 自己加上/
+
+   // agent.html 代码
+   //   <script type="text/javascript">
+   //   var b_iframe = window.parent.parent.document.getElementById("myFrame");
+   //   var hash_url = window.location.hash;
+   //   if (hash_url.indexOf("#") >= 0) {
+   //     var hash_width = hash_url.split("#")[1].split("|")[0] + "px";
+   //     var hash_height = hash_url.split("#")[1].split("|")[1] + "px";
+   //   console.log(hash_width,hash_height)
+   //     b_iframe.style.width = hash_width;
+   //     b_iframe.style.height = hash_height;
+   //   }
+   // < script>自己加上/
+
+    //第二种方案 ：采用postMessage
+      // 1 a.html 如下设置
+      // <iframe src="http://awesome.xujianbin.pw/c.html" frameborder="0" id="myFrame" style="visibility:hidden;"></iframe>
+      // <script>
+      //   window.addEventListener('message', function(e) {
+      //     if (e.origin !== "http://awesome.xujianbin.pw") return;
+      //     var width = JSON.parse(e.data).width;
+      //     var height = JSON.parse(e.data).height;
+      //     document.getElementById("myFrame").style.height = height + "px";
+      //     document.getElementById("myFrame").style.width = width + "px";
+      //     document.getElementById("myFrame").style.visibility = 'visible';
+      //   }, false);
+      // <script>　因为格式原因暂时去掉/使用自行加上
+      //
+      // 2 c.html 如下设置
+      // <div style="width:600px;height:2000px;background:red;overflow:hidden"></div>
+      // <script type="text/javascript">
+      //   window.onload = function() {
+      //     var b_width = Math.max(document.body.scrollWidth, document.body.clientWidth);
+      //     var b_height = Math.max(document.body.scrollHeight, document.body.clientHeight);
+      //     parent.postMessage(JSON.stringify({
+      //       width: b_width,
+      //       height: b_height
+      //     }), 'http://source.xujianbin.pw/asdfas.html');
+      //   }
+      // <script> 因为格式原因暂时去掉/使用自行加上
+    // -----------------------------------------------------------------------------------------------------------------------------
+
+    // 参考资料
+    // 1 http://www.cnblogs.com/imwtr/p/6050937.html
+    // 2 http://blog.csdn.net/hj7jay/article/details/51675692
+    // 3 http://blog.csdn.net/kongjiea/article/details/38870399
+    // 4 http://caibaojian.com/iframe-adjust-content-height.html
+  </script>
+
+</head>
+
+<body>
+  <iframe src="http://www.runoob.com/jsref/event-frame-onload.html" frameborder="0" id="myFrame" onload="load()"></iframe>
+  <script>
+    function load() {
+      $("#myFrame").height($("#myFrame").contents().find("body").height());
+    }
+  </script>
+</body>
+
+</html>

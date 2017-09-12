@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    <title>旋转木马</title>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background: #000;
+        overflow: hidden;
+    }
+
+    #perspective {
+        perspective: 800px;
+        /*景深*/
+    }
+
+    #wrap {
+        position: relative;
+        width: 133px;
+        height: 200px;
+        margin: 200px auto;
+        transform-style: preserve-3d;
+        /*构建3D场景*/
+        transform: rotateX(-20deg) rotateY(0deg);
+        /*当设置了景深和场景 rotateX就是绕着X轴*/
+    }
+
+    #wrap img {
+    	display: block;
+    	width: 133px;
+    	height: 200px;
+        position: absolute;
+        transition: 1s;
+        transform: rotateY(0deg);
+        pointer-events: none; /*让图片无法选中，不然会有问题*/
+        border-radius: 8px;
+        border:10px solid #000;
+        box-shadow: 0 0 2px 2px #fefefe;
+       -webkit-box-reflect: below 15px -webkit-linear-gradient(top,rgba(250,250,250,0),rgba(250,250,250,.0) 30%,rgba(250,250,250,0.3));
+        box-reflect: below 15px -webkit-linear-gradient(top,rgba(250,250,250,0),rgba(250,250,250,.0) 30%,rgba(250,250,250,0.3)); 
+    }
+    </style>
+</head>
+
+<body>
+    <div id="perspective">
+        <div id="wrap">
+            <img src="1.jpg" alt=""  >
+            <img src="2.jpg" alt=""  >
+            <img src="3.jpg" alt=""  >
+            <img src="4.jpg" alt=""  >
+            <img src="5.jpg" alt=""  >
+            <img src="6.jpg" alt=""  >
+            <img src="7.jpg" alt=""  >
+            <img src="8.jpg" alt=""  >
+            <img src="9.jpg" alt=""  >
+            <img src="1.jpg" alt="" >
+            <img src="2.jpg" alt="" >
+        </div>
+    </div>
+    <script>
+    window.onload = function() {
+        var deg = 360 / 11;
+        var oImg = document.getElementsByTagName('img');
+        var oWrap = document.getElementById('wrap');
+
+        // 需设置绕Y轴每张照片的角度，translateZ可以想象成每张图片向前走了，自己画个坐标轴就知道了，Z轴方向就是看向屏幕
+        Array.prototype.forEach.call(oImg, function(elem, index) {
+            elem.style.transform = 'rotateY(' + index * deg + 'deg) translateZ(350px)';
+            elem.style.transition = '1s ' + index * 0.1 + 's';
+        });
+
+       var nowX ,nowY ,lastX ,lastY ,minsX,minsY,roX = -20,roY = 0;
+       document.onmousedown = function(e){
+          var e = e || window.event;
+          //第一次时需要这个，不然minsX,会变成NaN
+          lastX = e.clientX;
+          lastY = e.clientY;
+       	 document.onmousemove = function(e){
+            var e = e || window.event;
+
+       	 	nowX = e.clientX;
+            nowY = e.clientY;
+
+            minsX = nowX - lastX;
+            minsY = nowY - lastY;
+
+            roX -= minsY * 0.2;
+            roY += minsX * 0.2;
+
+            wrap.style.transform = "rotateX(" + roX + "deg) rotateY(" + roY + "deg)"; 
+
+            lastX = nowX;
+            lastY = nowY;
+
+       	 }
+
+       	 document.onmouseup = function(e){
+            this.onmousemove = null;
+            this.onmouseup = null;
+       	 }
+       }
+    }
+    </script>
+</body>
+
+</html>

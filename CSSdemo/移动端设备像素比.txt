@@ -1,4 +1,4 @@
-前端像素
+﻿前端像素
 
 1设备像素：屏幕的屋里像素
 2css像素：抽象概念
@@ -14,7 +14,7 @@ document.documentElement.clientHeight
 2视觉视口：用户看到的网站的区域
 
 3理想视口：虚拟出来的视口，布局视口的理想尺寸，理想的布局视口
-把布局视口设为理想视口：
+把布局视口设为理想视口：width=device-width
 <meta name="viweport" content="width=device-width" />
 
 
@@ -50,17 +50,105 @@ psd原稿的尺寸是按照设备像素设计的，而css的样式是基于布�
 即布局视口等于理想视口
 这里以iphone6为例，iphone6的设备像素比为2，设备像素为750，所以理想视口=设备像素/DPR，即理想视口（布局视口）等于375px，即设计稿的尺寸使我们css尺寸的两倍，所以我们做页面的时候，所以我们要把设计稿量得尺寸除以2才是我们css布局所用尺寸
 
-但应该有的设备DPR可能是2.5,3等等，除以2只是ipone6的尺寸，这是我们就要相办法把把css尺寸拉到与设备像素相等，这样设计稿的尺寸就可以直接用了，可以通过伸缩css像素，
+但应该有的设备DPR可能是2.5,3等等，除以2只是ipone6的尺寸，这是我们就要相办法把把css尺寸拉到与设备像素相等，这样设计稿的尺寸就可以直接用了，可以通过缩放css像素，
 
 var scale = 1 / window.devicePixelRatio; //设备像素比倒数
 document.querySelector('meta[name="viewport"]').setAttribute('content','width=device-width,initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
 
-这样又有一个问题，就是无论是iphone5,6即使设备像素变了，即屏幕宽度变了，可是元素的宽度并没有变
+这样又有一个问题，就是无论是iphone5,6 即使设备像素变了，即屏幕宽度变了，可是元素的宽度并没有变，因为设备像素与css像素现在的比例是1:1
 
 
-rem
+
+接下来引入rem这个单位
 ren是相对尺寸单位，相对于html标签字体大小的单位（文字字体大小不要使用rem，用px）
 
 
 
+参考文章 
+http://hcysun.me/2015/10/16/%E4%B8%80%E7%AF%87%E7%9C%9F%E6%AD%A3%E6%95%99%E4%BC%9A%E4%BD%A0%E5%BC%80%E5%8F%91%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%A1%B5%E9%9D%A2%E7%9A%84%E6%96%87%E7%AB%A0(%E4%B8%80)/
+
+http://hcysun.me/2015/10/19/%E4%B8%80%E7%AF%87%E7%9C%9F%E6%AD%A3%E6%95%99%E4%BC%9A%E4%BD%A0%E5%BC%80%E5%8F%91%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%A1%B5%E9%9D%A2%E7%9A%84%E6%96%87%E7%AB%A0-%E4%BA%8C/
+
+
+
+http://www.jianshu.com/p/985d26b40199   手机端页面自适应解决方案—rem布局进阶版（附源码示例）
+
+
+
+
+## 一、三个视口 ##
+-----
+ 
+ 1. 布局视口(`layout viewport`)
+     CSS布局的依据视口，在普通情况下（不加meta标签改变viewport）的宽度一般为980px，因此一般会比浏览器的屏幕要宽的多，目的是为了可以在移动端上显示正常的传统的PC端的页面 
+     下图是一些设备上浏览器默认的viewport宽度 
+     
+![clipboard.png](/img/bVSPnd)
+ 
+ 2. 视觉视口(`visual viewport`)
+    视觉视口可能要更好理解一些，他就是用户正在看到网站的区域，一般就是指屏幕的宽度 
+ 
+ 3. 理想视口(`ideal viewport`)
+    如果将理想视口理解为理想的布局视口，那么就可以帮助我们更好理解这个概念了。前面提到，我们布局依据的视口为布局视口，这也是css真正作用的视口，因为这一视口的目的是为了显示PC端页面，那么对于移动端来说，这并不可以让页面完美适配设备，所谓的完美适配指的是，首先不需要用户缩放和横向滚动条就能正常的查看网站的所有内容；第二，显示的文字的大小是合适，比如一段14px大小的文字，不会因为在一个高密度像素的屏幕里显示得太小而无法看清，理想的情况是这段14px的文字无论是在何种密度屏幕，何种分辨率下，显示出来的大小都是差不多的。当然，不只是文字，其他元素像图片什么的也是这个道理。而用于呈现完美适配的视口则称为理想视口，这也意味着每种设备都有着自己的理想视口。个人理解，理想视口的宽度为屏幕的宽度，以iPhone5为例，理想视口的宽度为320px。
+    我们可以通过meta标签来设置理想视口
+    `<meta name="viewport" content="width=device-width" />`
+ 
+## 二、视觉如一 ##
+-----
+前面提到，我们应该讲我们设计和开发的页面完美地适配各种设备，也就是让我们的页面在不同的设备上呈现的效果达到基本的一致。
+举个例子，如果我们设计师给我们的是基于iPhone6的750px的设计稿，里面有一个200x200px的div需要我们呈现在移动端页面上。因为iPhone6的理想视口为375px，那么经计算可得在iPhone6上这个div应该为100x100px，为了达到呈现一致的效果，如果要将这个div呈现在iPhone5上，那么它应该进行适当的缩小，经计算可得div应该为85.33x85.33px。那么我们应该如何做到这一点呢？有以下两种方法：
+    
+淘宝的做法：
+假设拿到上述的设计稿 
+ 
+    1.设置页面为理想视口以及页面的缩放比
+        var scale = 1 / window.devicePixelRatio;
+        document.querySelector('meta[name="viewport"]').setAttribute('content','width=device-width,initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
+    2.动态设置html的字体大小为
+        document.documentElement.style.fontSize = document.documentElement.clientWidth / 10 + 'px';
+    3.通过如上两步设置，我们得到html字体大小为75px，因此设置div的大小为200px/75=2.66666667rem;实际大小为2.66666667rem*75*0.5=100px;那么在iPhone5下，html字体大小为64px，而此时div的大小为2.66666667rem;得到实际大小为2.66666667rem*64*0.5=85.33px，完成目标。
+    4.在计算其他内容宽度时，只需将设计稿上的宽度除以75即可 
+    说明:如果不设置meta标签，则得到的clientWidth 为980px;如果设置了meta标签，那么clientWidth将于meta标签中的maximum-scale有关，clientWidth=device-width/scale，说明这一点只是为了帮助我们更好的理解，这也是为什么我们得到的字体大小为75px而不是37.5px的原因。 
+    
+网易的做法：
+   为了便于计算设计稿中其他内容对应的尺寸，我们设定设计图中html的`font-size`的大小为100px
+    1.设置页面为理想视口以及页面缩放比为1 
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" /> 
+    2.动态设置html的字体大小为(为了更方便计算其他内容的大小) 
+        document.documentElement.style.fontSize = document.documentElement.clientWidth / 以rem为单位的页面总宽 + 'px';
+    3.通过如上两步设置，我们得到html字体大小为50px，前面提到在设计图中的font-size为100px，因此设置div的大小为200px/100=2rem;实际大小(根据页面中的font-size计算)为2*50=100px;在iPhone5下，html的字体大小为42.666666667px，则div的实际大小为2*42.666666667px=85.33px，完成目标。
+ 
+## 三、字体 ##
+-----
+无论是淘宝的做法还是网易的做法，字体的大小设置都应该单独使用px作为单位，我个人认为原因有
+    1.字体大小的控制应该是精准的，如果使用rem为单位，那么有可能在不同的设备上产生很多位小数
+    2.字体还应该使用媒体查询，为不同的设备设定不同的大小，如果使用rem那么有可能导致最后计算得到的字体大小区分不明显。（因为这两种方法得到的页面的font-size都很大，那么经浏览器计算得到的真实px值差别可能不大） 
+    3.省去了计算的麻烦 
+```
+参照网易对字体大小的设置 
+@media screen and (max-width: 321px) {
+    header,footer {
+        font-size:16px
+    }
+}
+ 
+@media screen and (min-width: 321px) and (max-width:400px) {
+    header,footer {
+        font-size:17px
+    }
+}
+ 
+@media screen and (min-width: 400px) {
+    header,footer {
+        font-size:19px
+    }
+}     
+```
+## 总结 ##
+----- 
+这只是走向移动端开发的敲门砖，其他的还需要我们继续去努力和学习，最终实现轻松的开发移动端页面。 
+ 
+      
+           
+    
 

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>loading动画实现</title>
+  <style type="text/css">
+    /* 容器的居中和大小设置 */
+
+    .loading {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      /* 宽度是6个排列点的总和：(8+4*2)*6 */
+      width: 96px;
+      height: 12px;
+      margin: -6px 0 0 -48px;
+      /* 只显示容器范围内的进度条，超出的截掉 */
+      overflow: hidden;
+    }
+    /* 进度条 */
+
+    .loading .bar {
+      /* 宽度是所有排列点的总和：(8+4*2)*11 */
+      width: 176px;
+      /* 分成5步的动画来移动进度条 */
+      animation: loading 1s steps(5, end) both infinite;
+    }
+    /* 排列点 */
+
+    .loading i {
+      float: left;
+      width: 8px;
+      height: 4px;
+      margin: 4px;
+      background: #aaa;
+    }
+    /* 第6个点高亮，两边各5个普通点 */
+
+    .loading i:nth-child(6) {
+      transform: scale(1.5);
+      background: #333;
+    }
+    /* 定义关键帧 */
+
+    @keyframes loading {
+      /* 把进度条移动到第六个点正好在容器的左侧第一个 */
+      0% {
+        transform: translate(-80px);
+      }
+      /* 向右移动到第一个点正好在容器的左侧第一个，这里80%就完成一遍动画是为了给最后一步留出1/5的停留时间 */
+      80%,
+      100% {
+        transform: translate(0px);
+      }
+    }
+    /*第二种进度*/
+
+    .loading2 {
+      /* 居中定位和大小设置 */
+      position: fixed;
+      top: 70%;
+      left: 50%;
+      margin: -20px 0 0 -20px;
+      box-sizing: border-box;
+      width: 40px;
+      height: 40px;
+      /* 用边框做出3/4圆 */
+      border: 2px solid;
+      border-color: #333 #333 transparent;
+      border-radius: 50%;
+      /* 设置动画 */
+      animation: loading2 1s linear both infinite;
+    }
+    /* 定义动画关键帧 */
+
+    @keyframes loading2 {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="loading">
+    <div class="bar">
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+      <i></i>
+    </div>
+  </div>
+  <div class="loading2"></div>
+</body>
+
+</html>

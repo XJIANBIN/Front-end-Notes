@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CSS百分比padding实现比例固定图片自适应布局</title>
+    <style>
+    /*http://www.zhangxinxu.com/wordpress/2017/08/css-percent-padding-image-layout/*/
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    #container {
+        width: 400px;
+        margin-bottom: 20px;
+    }
+
+    #container:after {
+        content: " ";
+        visibility: hidden;
+        display: block;
+        height: 0;
+        clear: both;
+    }
+
+    .box {
+        width: 50%;
+        background: red;
+        float: left;
+        padding-top: 50%;
+        position: relative;
+    }
+
+    .box > img {
+        float: left;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .banner {
+        padding: 15.15% 0 0;
+        position: relative;
+    }
+
+    .banner>img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div class="box">
+            <img src="https://gss3.bdstatic.com/7Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike933%2C5%2C5%2C933%2C330/sign=c56a8f1f41fbfbedc8543e2d19999c53/a5c27d1ed21b0ef48410867ed7c451da81cb3e11.jpg" alt="">
+        </div>
+        <div class="box">
+            <img src="https://gss3.bdstatic.com/7Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike933%2C5%2C5%2C933%2C330/sign=c56a8f1f41fbfbedc8543e2d19999c53/a5c27d1ed21b0ef48410867ed7c451da81cb3e11.jpg" alt="">
+        </div>
+        <div class="box">
+            <img src="https://gss3.bdstatic.com/7Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike933%2C5%2C5%2C933%2C330/sign=c56a8f1f41fbfbedc8543e2d19999c53/a5c27d1ed21b0ef48410867ed7c451da81cb3e11.jpg" alt="">
+        </div>
+        <div class="box">
+            <img src="https://gss3.bdstatic.com/7Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike933%2C5%2C5%2C933%2C330/sign=c56a8f1f41fbfbedc8543e2d19999c53/a5c27d1ed21b0ef48410867ed7c451da81cb3e11.jpg" alt="">
+        </div>
+    </div>
+    <div class="banner">
+        <img src="http://qidian.qpic.cn/qidian_common/349573/9f7128dcfe1ec11bc3b13dc4131a13dd/0">
+    </div>
+</body>
+
+</html>

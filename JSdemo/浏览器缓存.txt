@@ -1,0 +1,29 @@
+# 缓存学习： http://qingbob.com/cache-design/
+
+### Cache-Control:
+
+* max-age:设置缓存时间，max-age=31536000；最大不超过一年，以秒为单位
+* no-cache 对资源使用缓存，但每一次在使用缓存之前必须（MUST）向服务器对缓存资源进行验证。
+* no-store 不使用任何缓存
+* must-revalidate 如果你配置了max-age信息，当缓存资源仍然新鲜（小于max-age）时使用缓存，否则需要对资源进行验证。所以must-revalidate可以和max-age组合使用Cache-Control: must-revalidate, max-age=60
+* private public: 服务器的返回可能会经过一些中间（intermediate）服务器甚至甚至专业的中间缓存服务器，还有CDN而有些请求返回是用户级别、是私人的，所以你可能不希望这些中间服务
+器缓存返回。此时你需要将Cache-Control设置为private以避免暴露。
+
+
+状态码：304；资源内容未发生改变
+
+Etag：第一次请求返回的请求头里，服务器生成，
+
+If-None-Match：当资源过期，浏览器再次请求会返回这个，值为过期Etag,通过对比Etag,判断资源是否更新
+
+Last-Modified:资源最后的更新时间。
+
+Etag属于强验证（Strong Validation），因为它期望的是资源字节级别的一致；
+Last-Modified属于弱验证（Weak Validation），只要资源的主要内容一致即可，允许例如页底的广告，页脚不同。
+
+
+Expires: 过期的具体时间，例如Sun, 21 Mar 2027 08:52:14 GMT
+
+
+
+一个请求在查找资源的过程中经过的缓存顺序是Memory Cache、Service Worker、HTTP Cache、Push “Cache

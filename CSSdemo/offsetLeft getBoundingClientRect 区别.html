@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>offsetLeft getBoundingClientRect 区别</title>
+	<script>
+ // 1 HTMLElement.offsetLeft 是一个只读属性，返回当前元素左上角相对于  HTMLElement.offsetParent节点的左边界偏移的像素值。
+ // 
+ // 1.1 HTMLElement.offsetParent 是一个只读属性，返回一个指向最近的（closest，指包含层级上的最近）包含该元素的定位元素。如果没有定位的元素，则 offsetParent 为最近的 table, table cell 或根元素（标准模式下为 html；quirks 模式下为 body）。当元素的 style.display 设置为 "none" 时，offsetParent 返回 null。
+ // 
+ // 2 Element.getBoundingClientRect()方法返回元素的大小及其相对于视口的位置。返回一个对象包括left.top.right,bottom.height,width 等信息
+ // 
+ // 3 jq 的 offset()方法引用getBoundingClientRect()
+ // 
+ // 4  使用translate定位的元素在 offsetTop 和 offsetLeft始终固定不变的，等于该元素到文档的原始left和top，
+ // 5 Element.clientTop一个元素顶部边框的宽度（以像素表示）。不包括顶部外边距或内边距。clientTop 是只读的。
+	</script>
+	<style>
+		html,body{
+			margin: 0;
+			padding: 0;
+		}
+	</style>
+</head>
+<body>
+    <div style="height: 200px;width:200px;"></div>
+    <div id="box" style="width:200px;height: 200px;background: red;transform: translateY(45px);">
+	</div>
+	<div style="position: relative;border-bottom: 1px solid black;">
+		<div id="combox" style="width:200px;height: 200px;background: yellow;position: absolute;left: 300px;top: 300px">	
+	</div>
+	<script>
+		var box = document.getElementById("box");
+		var combox = document.getElementById("combox");
+		console.log(box.offsetLeft);
+		console.log(box.offsetTop);
+		console.log(combox.offsetTop);
+		console.log(combox.offsetTop);
+	</script>
+</body>
+</html>

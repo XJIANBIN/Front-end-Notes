@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>setTimeout模拟setInvertal</title>
+	<script>
+	//注意点 1，setInterval执行的任务如果大于延迟时间，推荐做法是使用setTimeout模拟,保证执行结果按顺序执行，可在回调里面进行递归
+	//因为如果是网络连接等操作，可能会导致乱序返回，具体可看MDN，https://developer.mozilla.org/zh-CN/docs/Web/API/Window/setInterval
+	// 2， 有必要清理setTimeout吗？没有必要，clearTimeout并不是用来清理内存的，而是用来提前移除之前的setTimeout超时事件。如果setTimeout事件已经发生了，它会自动清理那些已经超过作用域的内存。
+	// 3，setInterval指定的是“开始执行”之间的间隔，并不考虑每次任务执行本身所消耗的事件。
+	// 方案一 setTimeout 递归执行
+		// (function loop() {
+		// 	setTimeout(function() {
+
+		// 		// logic here
+
+		// 		// recurse
+		// 		loop();
+
+		// 	}, 1000);
+		// })();
+	
+	//方案二
+	//
+	// function mySetInterval(cb, time) {
+	// 	let temp = function() {
+	// 		setTimeout(temp, time)
+	// 		cb.apply(null)
+	// 	}
+	// 	setTimeout(temp, time)
+	// }
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>数组去重</title>
+</head>
+<body>
+<script>
+// 编码实现下面删除数组中重复元素的功能
+// [2,4,2,3,4].deleteRepeat()		返回：[2,4,3]
+Array.prototype.deleteRepeat = function () {
+	var newArr = [],
+		flag = true;
+	for (var i = 0; i < this.length; i++) {
+		for (var j = 0; j< newArr.length; j++) {
+			if (this[i] === newArr[j]) {
+				flag = false;
+				break;	
+			}
+		}
+		flag == true ? newArr.push(this[i]) : flag = true;
+	}
+	return newArr;
+}
+
+console.log([2,4,2,3,4].deleteRepeat());
+</script>
+</body>
+</html>

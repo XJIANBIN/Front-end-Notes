@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>网格布局</title>
+    <!-- 资料: http://www.jianshu.com/p/d183265a8dad -->
+    <!-- fr: 被用于在一系列长度值中分配剩余空间。将剩余空间根据各自的数字平均分配 -->
+    <style>
+    #page {
+        display: grid;
+        width: 100%;
+        height: 250px;
+        grid-template-areas: "head head" "nav  main" "foot ....";
+        grid-template-rows: 50px 1fr 30px;
+        grid-template-columns: 150px 1fr;
+    }
+
+    #page>header {
+        grid-area: head;
+        background-color: #8ca0ff;
+    }
+
+    #page>nav {
+        grid-area: nav;
+        background-color: #ffa08c;
+    }
+
+    #page>main {
+        grid-area: main;
+        background-color: #ffff64;
+    }
+
+    #page>footer {
+        grid-area: foot;
+        background-color: #8cffa0;
+    }
+    </style>
+</head>
+
+<body>
+    <section id="page">
+        <header>Header</header>
+        <nav>Navigation</nav>
+        <main>Main area</main>
+        <footer>Footer</footer>
+    </section>
+</body>
+
+</html>

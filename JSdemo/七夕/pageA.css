@@ -1,0 +1,341 @@
+ * {
+     margin: 0;
+     padding: 0;
+ }
+
+ ul,
+ li {
+     list-style-type: none;
+ }
+
+ #content {
+     width: 100%;
+     height: 100%;
+     /* top: 20%; */
+     overflow: hidden;
+     position: absolute;
+ }
+
+ .content-wrapper {
+     position: relative;
+ }
+
+ .content-wrapper>li {
+     color: red;
+     float: left;
+     overflow: hidden;
+     position: relative;
+ }
+
+ .charector {
+     width: 151px;
+     height: 291px;
+     background: url(http://static.mukewang.com/img/55ade248000198ae10550582.png) -0px -291px no-repeat;
+     position: absolute;
+     left: 6%;
+     top: 55%;
+ }
+ /*pageA*/
+
+ .a_background {
+     width: 100%;
+     height: 100%;
+     position: absolute;
+ }
+
+ .a_background_top {
+     width: 100%;
+     height: 71.6%;
+     background-image: url('http://static.mukewang.com/img/55addf6900019d8f14410645.png');
+     background-size: 100% 100%;
+ }
+
+ .a_background_middle {
+     width: 100%;
+     height: 13.2%;
+     background-image: url("http://static.mukewang.com/img/55addf800001ff2e14410118.png");
+     background-size: 100% 100%;
+ }
+
+ .a_background_botton {
+     width: 100%;
+     height: 15.3%;
+     background-image: url("http://static.mukewang.com/img/55addfcb000189b314410138.png");
+     background-size: 100% 100%;
+ }
+
+ .slowWalk {
+     /*规定 @keyframes 动画的名称。*/
+     -webkit-animation-name: person-slow;
+     /*规定动画完成一个周期所花费的秒或毫秒。默认是 0*/
+     -webkit-animation-duration: 950ms;
+     /*规定动画被播放的次数。默认是 1。 infinite(循环播放)*/
+     -webkit-animation-iteration-count: infinite;
+     /*动画切换的方式是一帧一帧的改变*/
+     -webkit-animation-timing-function: steps(1, start);
+     -moz-animation-name: person-slow;
+     -moz-animation-duration: 950ms;
+     -moz-animation-iteration-count: infinite;
+     -moz-animation-timing-function: steps(1, start)
+ }
+
+ .slowFlolerWalk {
+     -webkit-animation-name: person-floler-slow;
+     -webkit-animation-duration: 950ms;
+     -webkit-animation-iteration-count: infinite;
+     -webkit-animation-timing-function: step-start;
+     -moz-animation-name: person-floler-slow;
+     -moz-animation-duration: 950ms;
+     -moz-animation-iteration-count: infinite;
+     -moz-animation-timing-function: step-start;
+ }
+ /*行走动画*/
+
+ @-webkit-keyframes person-slow {
+     0% {
+         background-position: -0px -291px;
+     }
+     25% {
+         background-position: -602px -0px;
+     }
+     50% {
+         background-position: -302px -291px;
+     }
+     75% {
+         background-position: -151px -291px;
+     }
+     100% {
+         background-position: -0px -291px;
+     }
+ }
+
+ @-moz-keyframes person-slow {
+     0% {
+         background-position: -0px -291px;
+     }
+     25% {
+         background-position: -602px -0px;
+     }
+     50% {
+         background-position: -302px -291px;
+     }
+     75% {
+         background-position: -151px -291px;
+     }
+     100% {
+         background-position: -0px -291px;
+     }
+ }
+ /*带花*/
+
+ @-webkit-keyframes person-floler-slow {
+     0% {
+         background-position: -453px -0px;
+     }
+     25% {
+         background-position: -904px -0px;
+     }
+     50% {
+         background-position: -451px -0px;
+     }
+     75% {
+         background-position: -753px -0px;
+     }
+     100% {
+         background-position: -300px -0px;
+     }
+ }
+
+ @-moz-keyframes person-floler-slow {
+     0% {
+         background-position: -453px -0px;
+     }
+     25% {
+         background-position: -904px -0px;
+     }
+     50% {
+         background-position: -451px -0px;
+     }
+     75% {
+         background-position: -753px -0px;
+     }
+     100% {
+         background-position: -300px -0px;
+     }
+ }
+
+ @keyframes person-floler-slow {
+     0% {
+         background-position: -453px -0px;
+     }
+     25% {
+         background-position: -904px -0px;
+     }
+     50% {
+         background-position: -451px -0px;
+     }
+     75% {
+         background-position: -753px -0px;
+     }
+     100% {
+         background-position: -300px -0px;
+     }
+ }
+ /*人物停止*/
+
+ .boyOriginal {
+     background-position: -150px -0px;
+ }
+
+ .pauseWalk {
+     -webkit-animation-play-state: paused;
+     -moz-animation-play-state: paused;
+ }
+ /*太阳的效果*/
+
+ #sun {
+     background: url("http://static.mukewang.com/img/55ade004000106c202010201.png") no-repeat;
+     position: absolute;
+     z-index: 1;
+     top: -30px;
+     height: 201px;
+     width: 201px;
+     right: 40%;
+     -webkit-transform:rotate(45deg);
+     -webkit-animation-name: rotation;
+     -webkit-animation-duration: 50s;
+     -webkit-animation-iteration-count:1;
+     -webkit-animation-fill-mode:forwards;
+     -moz-animation-name:rotate(45deg);
+     -moz-animation-name: rotation;
+     -moz-animation-duration: 50s;
+     -moz-animation-iteration-count:1;
+     -moz-animation-fill-mode:forwards;
+     animation-transform:rotate(45deg);
+     animation-name: rotation;
+     animation-duration: 50s;
+     animation-iteration-count:1;
+     animation-fill-mode: forwards; 
+
+ }
+
+ @-webkit-keyframes rotation {
+     0% {
+         transform: translateX(0) translateY(0);
+     }
+     100% {
+         transform: translateX(-2000px) translateY(400px);
+     }
+ }
+
+ @-moz-keyframes rotation {
+     0% {
+         transform: translateX(0) translateY(0);
+     }
+     100% {
+         transform: translateX(-2000px) translateY(400px);
+     }
+ }
+
+ @keyframes rotation {
+     0% {
+         transform: translateX(0) translateY(0);
+     }
+     100% {
+         transform: translateX(-2000px) translateY(400px);
+     }
+ }
+ /* 天空云 */
+
+ .cloud {
+     z-index: 2;
+     position: absolute;
+ }
+
+ .cloud1 {
+     width: 181px;
+     height: 101px;
+     left: -5%;
+     top: 15%;
+     background: url("http://static.mukewang.com/img/55addfde0001aec501810101.png");
+      -webkit-animation-name: smallCloud;
+     -webkit-animation-duration: 30s;
+     -webkit-animation-iteration: infinite;
+     -moz-animation-name: smallCloud;
+     -moz-animation-duration: 30s;
+     -moz-animation-iteration: infinite;
+     animation-name: smallCloud;
+     animation-duration: 30s;
+     animation-iteration: infinite;
+ }
+
+
+ .cloud2 {
+     width: 301px;
+     height: 140px;
+     right: -5%;
+     background: url("http://static.mukewang.com/img/55addff500016df503010140.png");
+      -webkit-animation-name: largeCloud;
+     -webkit-animation-duration: 60s;
+     -webkit-animation-iteration: infinite;
+     -moz-animation-name: largeCloud;
+     -moz-animation-duration: 60s;
+     -moz-animation-iteration: infinite;
+     animation-name: largeCloud;
+     animation-duration: 60s;
+     animation-iteration: infinite;
+ }
+
+ @-webkit-keyframes smallCloud {
+     0% {
+         left: -5%;
+     }
+     100% {
+         left: 100%;
+     }
+ }
+
+ @-moz-keyframes smallCloud {
+     0% {
+         left: -5%;
+     }
+     100% {
+         left: 100%;
+     }
+ }
+
+ @keyframes smallCloud {
+     0% {
+         left: -5%;
+     }
+     100% {
+         left: 100%;
+     }
+ }
+
+ @-webkit-keyframes largeCloud {
+     0% {
+         right: -5%;
+     }
+     100% {
+         right: 100%;
+     }
+ }
+
+ @-moz-keyframes largeCloud {
+     0% {
+         right: -5%;
+     }
+     100% {
+         right: 100%;
+     }
+ }
+
+ @keyframes largeCloud {
+     0% {
+         right: -5%;
+     }
+     100% {
+         right: 100%;
+     }
+ }

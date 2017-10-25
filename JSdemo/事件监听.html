@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>事件监听方式</title>
+    <script>
+    // addEventListener 优点
+    // 1 可以同一事件绑定多次，而on[type] 只能绑定一次；
+    //２　可以选择冒泡还是捕获，控制更精细
+    // 3  它对任何 DOM 元素都是有效的，而不仅仅只对 HTML 元素有效。(不理解)
+    // 4 如果同一个 EventTarget 注册了多个相同的 EventListener（事件处理器，就是调用相同的处理方法，如果是匿名函数，就会重复执行），那么重复的实例会被抛弃
+    // 5 内存问题  绑定处理函数的时候一般 不要直接使用匿名函数，生命一个函数去使用，这样占据的存储空间更小。
+    //  监听器第三个参数
+      //{
+      //    useCapture:false; //捕获冒泡
+      //    passive: false;    // 告诉浏览器处理实践中不会阻止默认事件event.preventDefault()；因为浏览器不知道在处理事件中有没阻止，所以得等监听器执行完才能执行默认行为，而执行监听器需要事件，这样就会造成卡顿。http://www.cnblogs.com/ziyunfei/p/5545439.html
+      //    one: false;  // 是否执行一次
+      // }
+
+    //对于 Internet Explorer 来说，在IE 9之前，你必须使用 attachEvent
+    // attachEvent 方法有个缺点，this 的值会变成 window 对象的引用而不是触发事件的元素。
+
+    //addEventListener() 在DOM 2 Events 规范中引入。在这之前，事件监听器应该用以下的方法注册：示例五
+    //这个方法会替换这个元素上所有已存在的 onclick 事件。对于其他事件是类似的，比如 blur (onblur)、 keypress (onkeypress)等等。
+    //由于这是 DOM 0 规范的基本内容，几乎所有浏览器都支持这个，而且不需要特殊的跨浏览器兼容代码。因此通常这个方法被用于动态地注册事件处理器，除非必须使用 addEventListener() 才能提供的特殊特性。
+    </script>
+</head>
+
+<body>
+    <div id="demo">1</div>
+    <div>2</div>
+    <div>3</div>
+    <div>4</div>
+    <div>5</div>
+    <script>
+    var els = document.getElementsByTagName('div');
+    for (var i = els.length - 1; i >= 0; i--) {
+        // els.addEventListener('click',function(e){console.log(e.target.innerText)},false);
+        // els.onclick = function(){console.log(1)}
+    }
+    //-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
+    //示例四
+    function domy() {
+        console.log(10);
+    }
+    demo.addEventListener('click', domy);
+    demo.addEventListener('click', domy);
+    demo.addEventListener('click', function() { console.log(1) });
+    demo.addEventListener('click', function() { console.log(1) });
+    //-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
+    //示例五
+    // el.onclick = modifyText; // Using a function expression 
+    // element.onclick = function() {
+    //     // ... function logic ... 
+    // };
+    //-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
+    // 示例六
+    // var i;
+    // var els = document.getElementsByTagName('*');
+
+    // // Case 1
+    // for (i = 0; i < els.length; i++) {
+    //     els[i].addEventListener("click", function(e) { /*do something*/ }, false
+    //     });
+    // }
+
+    // // Case 2
+    // function processEvent(e) {
+    //     /*do something*/
+    // }
+
+    // for (i = 0; i < els.length; i++) {
+    //     els[i].addEventListener("click", processEvent, false
+    //     });
+    // }
+     // 在第一种情况下，每个循环中都会创建一个新的（匿名）函数。在第二种情况下，会使用先前声明的相同的函数作为事件处理器。这样的结果是占用的存储空间更小。而且，在第一种情况中，由于没有保持到匿名函数的引用
+    //-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
+    </script>
+</body>
+
+</html>

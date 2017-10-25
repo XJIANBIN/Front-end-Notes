@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>鼠标拖拽画S</title>
+    <style>
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    #myCanvas {
+        display: block;
+        border: 1px solid #ea0773;
+        margin: 20px auto;
+    }
+    </style>
+</head>
+
+<body>
+    <canvas id="myCanvas"  width="400px" height="400px">
+        您的浏览器不支持H5 canvas,请更换或更新浏览器以体验!
+    </canvas>
+    <script>
+    	// 注意canvas 宽高设置的问题，必须写在canvas标签内，并且按指定格式书写。因为canvas标签里的宽高是相当于定义画布的大小（默认宽300px，高150px）。 // 在定义了画布之后，canvas就相当于一张图片了，类似于img，所以这个时候再设置宽高，就会把canvas拉伸成style里设置的宽高了。
+    // window.addEventListener('load',canvasDraw,false);
+
+    function canvasSupport(e) {
+        return !!e.getContext;
+    }
+
+    window.onload = function() {
+        var myCanva = document.getElementById('myCanvas'),
+            myCanvasLeft = myCanva.offsetLeft,
+            myCanvasTop = myCanva.offsetTop;
+        if (!canvasSupport(myCanva)) {
+            return;
+        }
+        var ctx = myCanva.getContext('2d');
+
+        myCanva.onmousedown = function(event) {
+            var e = event || window.event;
+            ctx.moveTo(e.clientX - myCanvasLeft, e.clientY - myCanvasTop);
+            document.onmousemove = function(event) {
+                var e =  event || window.event;
+                ctx.lineTo(e.clientX - myCanvasLeft, e.clientY - myCanvasTop);
+                ctx.stroke();
+            }
+            myCanva.onmouseup = function(event) {
+                document.onmousemove = null;
+                document.onmouseup = null;
+            }
+        }
+    }
+    </script>
+</body>
+
+</html>

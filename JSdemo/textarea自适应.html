@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>textarea自适应</title>
+	<style>
+		
+	</style>
+	<script>
+		var observe;
+		if (window.attachEvent) {
+			observe = function(element, event,handler){
+               element.attachEvent('on' + Event,handler);
+			};
+		}else {
+			observe = function(element, event, handler){
+				element.addEventListener(event, handler, false);
+			}
+		}
+		function init(){
+			var text = document.getElementById('text');
+			function resize() {
+				text.style.height = 'auto';
+				console.log(text.scrollHeight );
+				text.style.height = text.scrollHeight + 'px';
+			}
+			function delayResize(){
+				setTimeout(resize,0);
+			}
+			observe(text,'change', resize);
+			observe(text,'cut', delayResize);
+			observe(text, 'paste', delayResize);
+			observe(text, 'drop', delayResize);
+			observe(text, 'keydown', delayResize);
+			text.focus();
+			text.select();
+			resize();
+		}
+	</script>
+</head>
+<body onload="init();">
+	<textarea name="text" id="text" rows="1"  cols="30"></textarea>
+	<!-- style="height:1em;" -->
+</body>
+</html>

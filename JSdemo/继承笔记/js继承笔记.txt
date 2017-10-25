@@ -1,4 +1,4 @@
-参考文章： 
+﻿参考文章： 
 http://ghmagical.com/article/page/id/omIoPb1AIBPu
 https://kongchenglc.coding.me/blog/js%E7%BB%A7%E6%89%BF20170503/#more
 
@@ -7,7 +7,7 @@ https://kongchenglc.coding.me/blog/js%E7%BB%A7%E6%89%BF20170503/#more
 2无法像父类构造函数传参数
 
 ###构造函数继承缺点：
-无法实现代码复用，因为定义在父类原型上的共有方法无法继承
+Animal.apply() 更改函数作用域，return 回去Dog已经执行拥有了Animal的属性，但是没有Animal原型上的方法和属性，这样就无法实现代码复用，因为定义在父类原型上的共有方法无法继承
 
 
 ###组合继承其实就是将类式继承和构造函数继承组合在一起：
@@ -45,3 +45,15 @@ var anotherPerson = Object.create(person, {
 c(anotherPerson.name);    
 
 缺点：引用类型的值得属性会共享相应的值。
+
+
+
+
+function Animal(color){
+  this.name = 'animal';
+  this.type = ['pig','cat'];
+}
+Animal.prototype.greet = function(sound){console.log(sound);}
+function Dog(){
+   return new Animal();
+}
